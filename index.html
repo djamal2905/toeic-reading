@@ -1,0 +1,1015 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>TOEIC Reading</title>
+<meta name="description" content="Entraînement TOEIC Reading : Parties V, VI et VII, 100 questions en 75 minutes, correction détaillée.">
+<style>:root{box-sizing:border-box}body{margin:0;padding:0}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+/* Concept : salle d'examen. Barre collante (chrono + progression), livret blanc en serif au centre,
+   feuille de réponses OMR (bulles roses, remplies au graphite) à droite sur grand écran. */
+:root{
+  --paper:#EEF1F5; --sheet:#FFFFFF; --doc:#F6F8FA;
+  --ink:#17212D; --ink-2:#4F5C6B; --rule:#D5DBE3;
+  --omr:#C4485F; --graphite:#222B36;
+  --hover:#EAEFF5; --sel:#E3EAF4; --focus:#1D5FD6;
+  --ok:#17794A; --ok-bg:#E3F3EA; --bad:#B3261E; --bad-bg:#FBE7E5; --warn:#8F5200; --warn-bg:#FFF0D6;
+  --serif:'Source Serif 4','Times New Roman',Georgia,serif;
+  --sans:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#12171E; --sheet:#1A222C; --doc:#161D26;
+    --ink:#E7ECF2; --ink-2:#A2AEBB; --rule:#2F3A47;
+    --omr:#E7798D; --graphite:#E7ECF2;
+    --hover:#222C38; --sel:#26364A; --focus:#7FB0FF;
+    --ok:#5CC58C; --ok-bg:#153525; --bad:#FF8C84; --bad-bg:#3C1B19; --warn:#F2B04B; --warn-bg:#3A2A0E;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#12171E; --sheet:#1A222C; --doc:#161D26;
+  --ink:#E7ECF2; --ink-2:#A2AEBB; --rule:#2F3A47;
+  --omr:#E7798D; --graphite:#E7ECF2;
+  --hover:#222C38; --sel:#26364A; --focus:#7FB0FF;
+  --ok:#5CC58C; --ok-bg:#153525; --bad:#FF8C84; --bad-bg:#3C1B19; --warn:#F2B04B; --warn-bg:#3A2A0E;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{background:var(--paper);color:var(--ink);font:400 15px/1.5 var(--sans);-webkit-text-size-adjust:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--sheet)}
+h1,h2,h3{margin:0;text-wrap:balance}
+p{margin:0}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+
+/* Barre */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--sheet);border-bottom:1px solid var(--rule)}
+.bar-in{max-width:1120px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px;padding-block:10px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.brand{display:flex;flex-direction:column;line-height:1.15;margin-right:auto;min-width:0}
+.brand b{font:600 .95rem var(--sans);letter-spacing:.02em}
+.brand span{font:400 .75rem var(--sans);color:var(--ink-2)}
+.clock{display:flex;align-items:center;gap:10px}
+#tm{font:500 1.5rem/1 var(--mono);font-variant-numeric:tabular-nums;padding:6px 10px;border:1.5px solid var(--rule);border-radius:6px;min-width:5.4ch;text-align:center}
+.clock[data-s="warn"] #tm{color:var(--warn);border-color:var(--warn);background:var(--warn-bg)}
+.clock[data-s="crit"] #tm{color:var(--bad);border-color:var(--bad);background:var(--bad-bg)}
+.clock.hid #tm{visibility:hidden}
+.cs{display:flex;flex-direction:column;align-items:flex-start;line-height:1.2}
+.cl{font:400 .72rem var(--sans);color:var(--ink-2)}
+.prog{display:flex;align-items:center;gap:10px;flex:1 1 170px;min-width:0}
+.prog span{font:500 .85rem var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.track{flex:1;height:6px;background:var(--rule);border-radius:3px;overflow:hidden;min-width:60px}
+.track i{display:block;height:100%;width:0;background:var(--graphite);transition:width .2s}
+.acts{display:flex;gap:8px;flex-wrap:wrap}
+.btn{appearance:none;border:1.5px solid var(--graphite);background:var(--graphite);color:var(--sheet);padding:8px 14px;border-radius:6px;font:600 .875rem var(--sans);cursor:pointer;min-height:40px}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.big{padding:13px 26px;font-size:1rem;min-height:48px}
+.lnk{appearance:none;background:none;border:0;color:var(--ink-2);text-decoration:underline;cursor:pointer;font:400 .78rem var(--sans);padding:2px 0}
+.confirm{background:var(--warn-bg);border-top:1px solid var(--rule)}
+.confirm .bar-in{padding-block:8px}
+.confirm p{font-weight:500;color:var(--warn);margin-right:auto}
+
+/* Mise en page */
+.wrap{max-width:1120px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr);gap:20px;align-items:start;padding-block:20px 64px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.omr{display:none}
+@media (min-width:1000px){
+  .wrap.has-omr{grid-template-columns:minmax(0,1fr) 236px}
+  .omr{display:block;position:sticky;top:calc(env(safe-area-inset-top,0px) + 84px);max-height:calc(100vh - 110px);overflow:auto;background:var(--sheet);border:1px solid var(--rule);padding:12px 12px 14px}
+}
+.booklet{background:var(--sheet);border:1px solid var(--rule);padding:4px clamp(14px,3vw,34px) 22px;min-width:0}
+.part+.part{margin-top:30px;border-top:2px solid var(--ink)}
+.ph{padding-top:22px}
+.kick{font:500 .75rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--omr)}
+.ph h2{font:600 1.35rem/1.2 var(--sans);margin-top:4px}
+.dir{font:italic 400 1rem/1.5 var(--serif);margin-top:10px;max-width:62ch}
+.fr{font-size:.85rem;color:var(--ink-2);margin-top:4px;max-width:62ch}
+
+.part{scroll-margin-top:96px}
+.bd{font:500 .8rem var(--mono);color:var(--omr);margin-top:8px}
+.pn{display:flex;gap:4px}
+.pn button{appearance:none;border:1.5px solid var(--rule);background:transparent;padding:6px 10px;border-radius:6px;font:600 .8rem var(--mono);cursor:pointer;min-height:36px}
+.pn button:hover{background:var(--hover)}
+/* Questions */
+.qs{list-style:none;margin:16px 0 0;padding:0}
+.q{display:grid;grid-template-columns:3rem minmax(0,1fr);padding-block:14px;border-top:1px solid var(--rule);scroll-margin-top:100px;transition:background .4s}
+.q.flash{background:var(--warn-bg)}
+.qn{font:500 .95rem/1.7 var(--mono);color:var(--ink-2)}
+.qt{font:400 1.1rem/1.55 var(--serif);margin-bottom:6px;max-width:68ch}
+.gap{display:inline-block;width:4em;height:1em;border-bottom:2px solid var(--ink);margin:0 .2em;vertical-align:-.1em}
+.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 12px}
+.opts.long{grid-template-columns:minmax(0,1fr)}
+@media (max-width:479px){.opts{grid-template-columns:minmax(0,1fr)}}
+.opt{appearance:none;display:flex;gap:10px;align-items:flex-start;text-align:left;width:100%;min-height:44px;padding:8px 10px;border:1px solid transparent;border-radius:6px;background:none;cursor:pointer}
+.opt:hover{background:var(--hover)}
+.opt[aria-pressed="true"]{background:var(--sel);border-color:var(--rule)}
+.bub{flex:none;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--omr);color:var(--omr);display:grid;place-items:center;font:500 12px/1 var(--mono)}
+.opt[aria-pressed="true"] .bub{background:var(--graphite);border-color:var(--graphite);color:var(--sheet)}
+.ot{font:400 1.05rem/1.4 var(--serif);padding-top:2px;min-width:0;overflow-wrap:anywhere}
+
+/* Textes (Part 6) */
+.doc{background:var(--doc);border:1px solid var(--rule);padding:16px clamp(14px,2.5vw,26px);margin-top:18px;font:400 1.05rem/1.65 var(--serif)}
+.dk{font:500 .72rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);margin-bottom:8px}
+.meta{font:400 .85rem/1.5 var(--mono);color:var(--ink-2);margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--rule);overflow-wrap:anywhere}
+.doc h3{font:600 1.2rem/1.3 var(--serif);margin-bottom:8px}
+.doc p+p{margin-top:.8em}
+.blank{display:inline-flex;justify-content:center;min-width:4.4em;border-bottom:2px solid var(--ink);margin:0 .2em;padding:0 .3em}
+.blank i{font:500 .8rem var(--mono);font-style:normal}
+.blank.done{background:var(--sel);border-bottom-color:var(--omr)}
+.pq{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 28px;margin-top:6px}
+.pq .q.ins{grid-column:1/-1}
+@media (max-width:759px){.pq{grid-template-columns:minmax(0,1fr)}}
+.pq .q{border-top:1px solid var(--rule)}
+
+/* Feuille OMR */
+.omr h2{font:500 .78rem var(--mono);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.omr .sec{font:500 .7rem var(--mono);color:var(--ink-2);margin:12px 0 4px;letter-spacing:.08em}
+.row{appearance:none;display:grid;grid-template-columns:2.3rem repeat(4,16px);gap:6px;align-items:center;width:100%;padding:2px 4px;border:0;background:none;border-radius:4px;cursor:pointer;text-align:left}
+.row:hover{background:var(--hover)}
+.row .n{font:500 .72rem var(--mono);color:var(--ink-2)}
+.row .b{width:16px;height:16px;border-radius:50%;border:1.2px solid var(--omr);display:grid;place-items:center;font:500 8px/1 var(--mono);color:var(--omr)}
+.row .b.on{background:var(--graphite);border-color:var(--graphite);color:var(--sheet)}
+
+/* Accueil */
+.start{max-width:780px;margin:0 auto;padding-block:44px 72px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.start h1{font:600 clamp(1.9rem,5vw,2.75rem)/1.1 var(--sans);letter-spacing:-.015em;margin-top:8px}
+.lead{font:400 1.05rem/1.6 var(--serif);max-width:60ch;margin-top:14px;color:var(--ink)}
+fieldset{border:0;margin:28px 0 0;padding:0;min-width:0}
+legend{font:500 .75rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);padding:0;margin-bottom:10px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.tile{position:relative;display:block;cursor:pointer}
+.tile input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.tin{display:flex;flex-direction:column;gap:2px;height:100%;padding:12px 14px;background:var(--sheet);border:1.5px solid var(--rule);border-radius:6px}
+.tin b{font:600 1.05rem var(--sans)}
+.tin span{font-size:.85rem;color:var(--ink-2)}
+.tin em{font:500 .85rem var(--mono);font-style:normal;margin-top:6px}
+.tile input:checked+.tin{border-color:var(--graphite);box-shadow:inset 0 0 0 1px var(--graphite);background:var(--sel)}
+.tile input:focus-visible+.tin{outline:2px solid var(--focus);outline-offset:2px}
+.go{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px;margin-top:30px}
+.tl{font:500 .95rem var(--mono)}
+.note{margin-top:26px;font-size:.85rem;color:var(--ink-2);max-width:62ch}
+.hs{font:500 .75rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);margin-top:36px}
+.hist{list-style:none;margin:10px 0 0;padding:0;border-top:1px solid var(--rule)}
+.hist li{display:grid;grid-template-columns:5.5rem minmax(0,1fr) 5rem 4.5rem;gap:10px;padding:8px 0;border-bottom:1px solid var(--rule);font:400 .9rem var(--mono);font-variant-numeric:tabular-nums}
+.hist b{font-weight:500}
+
+/* Résultats */
+.sum{background:var(--sheet);border:1px solid var(--rule);padding:22px clamp(14px,3vw,34px);display:grid;grid-template-columns:minmax(0,1fr);gap:24px}
+@media (min-width:860px){.sum{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:40px}}
+.sc{font:500 clamp(3.5rem,12vw,5.5rem)/1 var(--mono);font-variant-numeric:tabular-nums}
+.of{font:400 1.5rem var(--mono);color:var(--ink-2);margin-left:.2em}
+.rsm{margin-top:10px;color:var(--ink-2);font-size:.92rem}
+.rsm b{color:var(--ink);font-weight:600}
+.tmo{margin-top:12px;padding:8px 12px;background:var(--warn-bg);color:var(--warn);font-weight:500;border-radius:4px}
+.sum h2{font:500 .75rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);margin-bottom:10px}
+.tbs{display:grid;gap:9px}
+.tb{display:grid;grid-template-columns:minmax(7rem,11.5rem) minmax(0,1fr) 3.4rem;gap:10px;align-items:center;font-size:.9rem}
+.tb .bt{height:8px;background:var(--rule);border-radius:4px;overflow:hidden}
+.tb .bt i{display:block;height:100%;background:var(--ok)}
+.tb[data-lv="mid"] .bt i{background:var(--warn)}
+.tb[data-lv="lo"] .bt i{background:var(--bad)}
+.tb .v{font:500 .85rem var(--mono);text-align:right;font-variant-numeric:tabular-nums}
+.pts{display:grid;gap:4px;margin-bottom:18px;font-size:.92rem}
+.pts div{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--rule);padding-bottom:4px}
+.pts b{font:500 .9rem var(--mono)}
+.rvh{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px;margin-top:6px}
+.rvh h2{font:600 1.35rem/1.2 var(--sans)}
+.seg{display:flex}
+.seg button{appearance:none;border:1.5px solid var(--graphite);background:transparent;padding:7px 14px;font:600 .85rem var(--sans);cursor:pointer;min-height:38px}
+.seg button:first-child{border-radius:6px 0 0 6px}
+.seg button:last-child{border-radius:0 6px 6px 0;border-left:0}
+.seg button[aria-pressed="true"]{background:var(--graphite);color:var(--sheet)}
+.rvl{list-style:none;margin:14px 0 0;padding:0}
+.rv{display:grid;grid-template-columns:3rem minmax(0,1fr);border-top:1px solid var(--rule);padding:14px 0}
+.top{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;margin-bottom:6px}
+.st{font:600 .75rem var(--sans);padding:2px 9px;border-radius:999px}
+.st.ok{background:var(--ok-bg);color:var(--ok)}
+.st.bad{background:var(--bad-bg);color:var(--bad)}
+.st.none{background:var(--hover);color:var(--ink-2)}
+.chip{font:500 .72rem var(--sans);color:var(--ink-2);border:1px solid var(--rule);padding:1px 9px;border-radius:999px}
+.rvo{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:3px}
+.rvo li{display:flex;gap:10px;align-items:baseline;font:400 1rem/1.4 var(--serif);padding:5px 8px;border-radius:4px}
+.rvo li.is-ok{background:var(--ok-bg)}
+.rvo li.is-bad{background:var(--bad-bg)}
+.rvo .lt{font:500 .8rem var(--mono);color:var(--ink-2);flex:none;width:1.2rem}
+.rvo .tg{margin-left:auto;padding-left:8px;font:600 .72rem var(--sans);white-space:nowrap}
+.rvo .is-ok .tg{color:var(--ok)}
+.rvo .is-bad .tg{color:var(--bad)}
+.ex{margin-top:10px;font:400 .92rem/1.55 var(--sans);max-width:68ch}
+mark.fill{background:var(--ok-bg);color:inherit;padding:0 .2em;border-bottom:2px solid var(--ok)}
+mark.fill sup{font:500 .65rem var(--mono);margin-right:.25em;color:var(--ink-2)}
+.pv{margin-top:6px}
+.only-wrong .rv.ok{display:none}
+.only-wrong .pv.allok{display:none}
+.review .part{margin-top:0}
+@media (max-width:479px){
+  .bar-in{gap:6px 12px}
+  #tm{font-size:1.25rem}
+  .hist li{grid-template-columns:4rem minmax(0,1fr) 3.5rem;font-size:.8rem}
+  .hist li span:last-child{display:none}
+  .tb{grid-template-columns:minmax(0,7.5rem) minmax(0,1fr) 3rem;font-size:.82rem}
+  .q,.rv{grid-template-columns:2.4rem minmax(0,1fr)}
+}
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script>
+(function(){
+"use strict";
+
+var T={g:"Grammaire",w:"Forme du mot",v:"Vocabulaire",c:"Prépositions & connecteurs",s:"Insertion de phrase"};
+var L="ABCD";
+var KEY="toeic56-hist";
+var PACE={exam:{label:"Examen",f:1},soft:{label:"Souple",f:1.5},free:{label:"Sans limite",f:0}};
+var BASE={p5:660,p6:540,p7:3300};
+function f(tag,q,o,e){return {tag:tag,q:q,o:o,e:e};}
+
+/* La bonne réponse est toujours en premier dans o : les choix sont mélangés à chaque essai. */
+var P5=[
+f(T.w,"Applicants who fail to submit all required documents by the deadline will not be ------- for the scholarship.",["considered","consideration","considerate","considering"],"Après « will not be », il faut un participe passé (passif) : « be considered for ». Consideration est un nom, considerate signifie « attentionné »."),
+f(T.c,"------- the unexpected delay at customs, the shipment arrived at the warehouse two days ahead of the revised schedule.",["Despite","Even though","Because","Whereas"],"« Despite » se construit avec un groupe nominal (the unexpected delay). Even though, Because et Whereas introduisent une proposition avec sujet et verbe."),
+f(T.g,"Mr. Duval asked that the report ------- to the legal department before it is circulated to shareholders.",["be sent","is sent","sends","was sent"],"Après un verbe de demande (ask, require, recommend, insist) suivi de that, on emploie le subjonctif : la base verbale, ici « be sent »."),
+f(T.g,"Rarely ------- such a detailed proposal been submitted by a first-time bidder.",["has","is","have","does"],"Après l'adverbe négatif « Rarely », l'auxiliaire passe devant le sujet : « has + proposal + been submitted ». Le sujet est singulier, donc has (pas have)."),
+f(T.g,"Neither the project manager nor the engineers ------- aware of the change in the specifications until Monday.",["were","was","is","has been"],"Avec « neither… nor », le verbe s'accorde avec le sujet le plus proche (the engineers, pluriel). « Until Monday » renvoie au passé : were."),
+f(T.g,"Had the company invested in staff training earlier, it ------- the costly errors that occurred last quarter.",["would have avoided","would avoid","will avoid","avoided"],"« Had + participe passé » est un conditionnel passé inversé (= If the company had invested). La principale prend « would have + participe passé »."),
+f(T.g,"The new hybrid work policy applies to ------- employees who have completed the probationary period.",["all","every","each","another"],"« Employees » est au pluriel : seul all convient. Every, each et another se placent devant un nom singulier."),
+f(T.w,"Ms. Tanaka is ------- the most experienced negotiator in the firm.",["easily","easy","ease","easier"],"Il faut un adverbe pour renforcer le superlatif : « easily the most experienced » (de loin la plus expérimentée)."),
+f(T.c,"The warranty remains valid ------- the product is used in accordance with the instructions.",["as long as","so that","in case","even if"],"« As long as » = à condition que. So that exprime le but, in case = au cas où, even if = même si (ce qui contredit l'idée de condition)."),
+f(T.c,"Customers must present a receipt; -------, they will not be eligible for a refund.",["otherwise","likewise","meanwhile","furthermore"],"Après un point-virgule, « otherwise » (sinon) introduit la conséquence négative. Likewise (de même), meanwhile (pendant ce temps) et furthermore (de plus) n'ont pas ce sens."),
+f(T.w,"The winners are ------- to be announced at the gala on Friday.",["expected","expecting","expectation","expectant"],"Les gagnants ne peuvent pas « attendre » ici : le sens est passif, « be expected to + verbe » (devoir être annoncés). Expecting serait actif."),
+f(T.g,"------- of the three proposals submitted by the vendors met the minimum technical requirements.",["None","Neither","No","Nothing"],"« None of the three » : pronom pour plus de deux éléments. Neither ne s'emploie que pour deux ; No et Nothing ne se combinent pas avec « of the »."),
+f(T.c,"Mr. Reyes was promoted to regional director ------- his consistently outstanding sales performance.",["owing to","in spite","as though","in case of"],"« Owing to » = en raison de, suivi d'un groupe nominal. « In spite » exigerait « of », « as though » introduit une proposition, « in case of » (en cas de) est illogique ici."),
+f(T.g,"The vendor ------- bid was the lowest was disqualified for incomplete paperwork.",["whose","who","which","whom"],"Le lien de possession (the vendor's bid) se traduit par le relatif possessif « whose », suivi d'un nom."),
+f(T.v,"The airline offered passengers vouchers as ------- for the inconvenience caused by the cancellation.",["compensation","competition","compliance","completion"],"« Compensation » = dédommagement. Competition (concurrence), compliance (conformité) et completion (achèvement) ne conviennent pas."),
+f(T.v,"The CEO is known for her ------- attention to detail, which has earned the trust of investors.",["meticulous","hesitant","abundant","reluctant"],"« Meticulous » = minutieux, qui s'associe naturellement à « attention to detail ». Hesitant et reluctant expriment une réticence ; abundant = abondant."),
+f(T.v,"Before signing the lease, you should carefully ------- the terms and conditions.",["review","overlook","preview","revive"],"« Review » = examiner attentivement. Overlook = négliger, preview = prévisualiser, revive = faire revivre."),
+f(T.v,"The city council has ------- a new regulation limiting the height of commercial signs.",["enacted","enabled","engaged","entitled"],"« Enact a regulation » = adopter, promulguer un règlement. Enable = permettre, engage = engager, entitle = donner droit à."),
+f(T.v,"Because the supplier failed to ------- with the contract terms, the company decided to seek an alternative.",["comply","adhere","abide","obey"],"« Comply with » = se conformer à. On dit « adhere to » et « abide by », et obey se construit sans préposition : seul comply se combine avec « with »."),
+f(T.w,"The workshop is open to all staff, but space is ------- so early registration is advised.",["limited","limit","limiting","limitation"],"Après « space is », il faut un adjectif attribut : limited (restreint). Limiting aurait un sens actif (« qui limite »)."),
+f(T.c,"The negotiations are expected to be concluded ------- the end of the fiscal year.",["by","until","during","since"],"« By » = au plus tard à (échéance). Until marque la durée d'une situation qui se prolonge, ce qui ne va pas avec « be concluded » (action ponctuelle)."),
+f(T.c,"All invoices must be paid ------- thirty days of receipt.",["within","among","between","beyond"],"« Within thirty days of » = dans un délai de trente jours après. Among et between n'ont pas de sens temporel ici ; beyond = au-delà."),
+f(T.g,"The more carefully the data is analyzed, ------- the forecasts become.",["the more reliable","more reliable","most reliable","reliably"],"Structure corrélative « the + comparatif, the + comparatif » : the more reliable."),
+f(T.g,"The instructions are ------- that even first-time users can assemble the cabinet in ten minutes.",["so clear","such clear","enough clear","clearly"],"« So + adjectif + that » (si… que). « Such » se place devant un nom (such clear instructions) et « enough » après l'adjectif."),
+f(T.v,"Employees are reminded not to ------- confidential client data on personal devices.",["store","stock","storage","stored"],"Après « not to », on attend la base verbale ; « store data » = stocker des données. Storage est un nom, stored un participe, et stock (verbe) = approvisionner."),
+f(T.g,"The board is considering ------- the headquarters to a less expensive district.",["relocating","to relocate","relocate","being relocated"],"« Consider » est suivi d'un verbe en -ing. « Being relocated » est passif et ne peut pas avoir de complément d'objet (the headquarters)."),
+f(T.c,"------- the committee has approved the budget, no purchases may be made.",["Until","During","Despite","Since"],"« Until » (tant que… pas) introduit une proposition. During et Despite exigent un groupe nominal ; Since (puisque) rendrait la phrase illogique."),
+f(T.w,"The accounts were audited ------- by two outside firms, which found no discrepancies.",["independently","independent","independence","independents"],"On modifie un verbe passif (were audited) : il faut un adverbe, independently. Independent est un adjectif, independence un nom."),
+f(T.g,"By the time the inspectors arrive next week, the technicians ------- all the faulty valves.",["will have replaced","will replace","replaced","have replaced"],"« By the time + présent » annonce un futur antérieur : will have + participe passé (action terminée avant l'arrivée des inspecteurs)."),
+f(T.v,"The merger will ------- the two firms' combined market share to more than 40 percent.",["raise","rise","arise","arouse"],"« Raise » est transitif (faire monter qqch). Rise et arise sont intransitifs ; arouse = éveiller, susciter.")
+];
+
+var P6=[
+{kind:"Mémo interne",title:"",head:["To: All Finance Division staff","From: Facilities Department","Date: 2 November","Re: Relocation to Harbor Tower"],
+ paras:["Please be advised that the Finance Division will move to the fourth floor of Harbor Tower {1} the weekend of 14 November. To minimize disruption, staff are strongly {2} to label all personal belongings and to pack their desk contents into the crates provided by Friday afternoon. {3}","IT personnel will reconnect all workstations on Sunday {4} normal operations can resume on Monday morning."],
+ qs:[
+  f(T.c,"",["over","since","while","until"],"« Over the weekend of » = pendant le week-end du. Since et until ne conviennent pas avec « will move » et une date précise ; while est une conjonction (suivie d'une proposition)."),
+  f(T.w,"",["encouraged","encouraging","encouragement","encourage"],"Structure passive « be strongly encouraged to + verbe » : participe passé. Encouraging serait actif, encouragement est un nom."),
+  f(T.s,"",["Crates that are not labeled clearly may not be delivered to the correct desk.","The Finance Division has been located on the second floor since 2015.","Harbor Tower was completed in the early 1990s by a local construction firm.","Employees who prefer to work remotely should contact human resources."],"La phrase insérée justifie la consigne d'étiquetage qui précède et prépare la phrase suivante sur la réinstallation des postes. Les autres phrases sont hors sujet : ancien étage, histoire du bâtiment, télétravail."),
+  f(T.c,"",["so that","in case","as if","rather than"],"« So that » exprime le but : le service informatique reconnecte les postes dimanche pour que l'activité reprenne lundi. In case (au cas où), as if (comme si) et rather than (plutôt que) ne donnent pas ce sens.")
+ ]},
+{kind:"E-mail",title:"",head:["To: Ms. Ingrid Lindqvist","From: Customer Care, Brightline Appliances","Subject: Your order no. 48217"],
+ paras:["Dear Ms. Lindqvist,","Thank you for contacting Brightline Appliances about the dishwasher you purchased on 3 September. We are very sorry {5} the unit arrived with a cracked control panel. {6}","We have arranged for a replacement to be shipped to your address, and it is expected {7} within five business days. {8} you prefer a refund instead, please reply to this message by Friday, and we will process it immediately.","Sincerely,\nMarta Gill"],
+ qs:[
+  f(T.g,"",["that","for","about","which"],"« Sorry that + proposition » (sujet + verbe). Sorry for et sorry about se suivent d'un nom ou d'un -ing, pas d'une proposition complète. Which n'a pas d'antécédent."),
+  f(T.s,"",["This is not the level of quality that our customers have come to expect from us.","Our stores are open daily from 9 A.M. to 8 P.M., including public holidays.","The dishwasher is available in three colors and two sizes.","We will be introducing a new loyalty program next spring."],"Après des excuses pour un produit abîmé, la phrase qui reconnaît le problème de qualité est la plus logique. Horaires, coloris et programme de fidélité n'ont aucun lien avec la réclamation."),
+  f(T.g,"",["to arrive","arrive","arriving","arrival"],"« Be expected + to + verbe » : it is expected to arrive. Les autres formes ne s'emploient pas après « expected » dans cette structure."),
+  f(T.g,"",["Should","Were","Had","Unless"],"Inversion conditionnelle : « Should you prefer… » = Si vous préfériez. « Were » exigerait « to prefer », « Had » demande un participe passé, et « Unless » (à moins que) inverse le sens.")
+ ]},
+{kind:"Article de presse",title:"Verrane Logistics Reports Record Quarter",head:[],
+ paras:["LYON – Verrane Logistics announced on Tuesday that its third-quarter profit rose 18 percent, {9} the strongest performance in the company's twelve-year history. Chief Executive Sandrine Morel attributed the result largely {10} the firm's investment in automated sorting facilities. {11}","Analysts, however, caution that the gains may prove {12} if fuel prices continue to rise."],
+ qs:[
+  f(T.g,"",["marking","marked","to mark","is marking"],"Participe présent en apposition : « …, marking the strongest performance ». Is marking créerait deux verbes sans conjonction ; marked aurait un sens passif."),
+  f(T.c,"",["to","on","for","by"],"« Attribute something to » = attribuer à. Les autres prépositions ne s'emploient pas avec attribute."),
+  f(T.s,"",["The new facilities, which opened in February, can process twice as many parcels per hour as the old ones.","Ms. Morel studied economics at the University of Lyon before joining the company.","Parcel delivery has been a part of European commerce for centuries.","Shareholders will be invited to the annual meeting in May."],"La phrase doit détailler l'investissement dans le tri automatisé, ce qui prépare le contraste introduit par « however ». Parcours de la dirigeante, histoire du colis et assemblée ne prolongent pas l'idée."),
+  f(T.w,"",["temporary","temporarily","temper","temporariness"],"Après « prove » (se révéler), on attend un adjectif attribut : temporary. Un adverbe ne peut pas qualifier « the gains » ici.")
+ ]},
+{kind:"Avis aux locataires",title:"Notice to Tenants",head:["Calloway Plaza Property Management"],
+ paras:["The management of Calloway Plaza wishes to inform tenants that both passenger elevators will be {13} service on Wednesday, 18 November, from 9:00 A.M. to 3:00 P.M. for scheduled maintenance. {14}","Tenants with limited mobility {15} assistance should contact the front desk no later than Monday. We apologize for any inconvenience this may cause, {16} we are confident the work will improve the reliability of the building's equipment."],
+ qs:[
+  f(T.v,"",["out of","off","outside","beyond"],"« Out of service » = hors service, expression figée."),
+  f(T.s,"",["Tenants are therefore advised to use the stairwells located at the north and south ends of the building.","The lobby was recently repainted in a neutral color.","Calloway Plaza offers underground parking for up to 200 vehicles.","The previous maintenance was carried out by a different contractor."],"Si les deux ascenseurs sont arrêtés, la suite logique est d'indiquer une alternative (les escaliers), d'où « therefore ». Les autres phrases ne concernent pas la gêne causée par l'arrêt."),
+  f(T.g,"",["requiring","require","required","who requires"],"Participe présent qui réduit une relative : « tenants … requiring assistance ». « Require » ajouterait un second verbe sans sujet ; « who requires » ne s'accorde pas avec « tenants » (pluriel)."),
+  f(T.c,"",["although","however","despite","in spite"],"« Although » introduit une concession dans une même phrase. « However » demande un point ou un point-virgule avant lui, « despite » un nom, « in spite » le mot « of ».")
+ ]}
+];
+
+/* ===== Livre 2 ===== */
+var P5b=[
+f(T.c,"The contract will be renewed automatically ------- either party gives written notice of termination.",["unless","because","whereas","so that"],"« Unless » = à moins que : le contrat est renouvelé sauf avis écrit. Because (parce que), whereas (alors que) et so that (afin que) ne donnent pas ce sens."),
+f(T.w,"Ms. Park's ------- to the project was recognized at the annual awards ceremony.",["contribution","contribute","contributory","contributing"],"Après le possessif « Ms. Park's », on attend un nom : contribution. Contribute est un verbe, contributory un adjectif rare, contributing un participe."),
+f(T.g,"Not until the audit was completed ------- the discrepancy in the accounts.",["did the team discover","the team discovered","the team did discover","discovered the team"],"Après « Not until + proposition », l'inversion est obligatoire dans la principale : did + sujet + base verbale (did the team discover)."),
+f(T.c,"The seminar has been rescheduled ------- the keynote speaker's flight was canceled.",["because","because of","due","in view"],"« Because » introduit une proposition (sujet + verbe). Because of et in view of exigent un nom ; due se construit avec « to »."),
+f(T.g,"Each of the technicians ------- required to complete a safety course before operating the new machinery.",["is","are","have been","were"],"« Each of + pluriel » prend un verbe au singulier : Each … is required."),
+f(T.g,"If the shipment ------- by Friday, we will have to cancel the order.",["does not arrive","will not arrive","would not arrive","has not been arrived"],"Dans une subordonnée en « if », on emploie le présent (does not arrive), pas le futur ni le conditionnel, même si la principale est au futur."),
+f(T.v,"The manager asked all employees to ------- their expense reports by the end of the week.",["submit","permit","commit","admit"],"« Submit a report » = remettre un rapport. Permit = permettre, commit = s'engager, admit = admettre."),
+f(T.w,"The new smartphone is ------- lighter than its predecessor.",["considerably","considerable","consider","considerate"],"Un adverbe peut modifier un comparatif : « considerably lighter » (nettement plus léger). Considerable est un adjectif."),
+f(T.c,"------- the proposal was well received, the board requested several revisions.",["Although","Despite","However","Because of"],"« Although » introduit une proposition de concession. Despite et Because of exigent un nom ; However est un adverbe de liaison qui ne relie pas deux propositions."),
+f(T.g,"The president, along with several vice presidents, ------- scheduled to attend the ceremony.",["is","are","were","have been"],"« Along with » n'ajoute pas de sujet : le verbe s'accorde avec « The president » (singulier) : is."),
+f(T.v,"The hotel offers a ------- shuttle service to and from the airport.",["complimentary","complementary","compliant","competitive"],"« Complimentary » = gratuit, offert. À ne pas confondre avec complementary (complémentaire) ; compliant = conforme, competitive = concurrentiel."),
+f(T.g,"Ms. Ito reviewed the budget ------- before sending it to the finance committee.",["herself","her","hers","she"],"« Herself » (pronom réfléchi emphatique) = elle-même ; on le place après le complément : reviewed the budget herself."),
+f(T.c,"All visitors must sign in at the front desk ------- entering the building.",["before","besides","except","unless"],"« Before » + -ing (before entering) = avant de. Besides = en plus de, except = sauf, unless introduit une proposition."),
+f(T.g,"The factory ------- more than 500 units per day since the new equipment was installed.",["has produced","produced","produces","is producing"],"« Since » avec un repère passé (was installed) appelle le present perfect : has produced."),
+f(T.v,"The auditors found several ------- in the quarterly financial statements.",["discrepancies","disciplines","dispositions","disruptions"],"« Discrepancies » = écarts, incohérences. Disciplines, dispositions et disruptions n'ont pas ce sens dans des états financiers."),
+f(T.v,"Please ------- the attached form and return it to the personnel office.",["complete","compete","complement","comprise"],"« Complete a form » = remplir un formulaire. Compete = concourir, complement = compléter, comprise = comprendre."),
+f(T.w,"Because the lease is -------, tenants may leave without penalty after six months.",["flexible","flexibly","flexibility","flex"],"Après « the lease is », il faut un adjectif : flexible. Flexibly est un adverbe, flexibility un nom."),
+f(T.g,"The shipment would have arrived on time if the truck ------- down on the highway.",["had not broken","did not break","would not break","has not broken"],"Conditionnel passé (type 3) : « would have arrived … if + had + participe passé » : had not broken down."),
+f(T.c,"The company has expanded rapidly, ------- its competitors have struggled to maintain market share.",["whereas","therefore","moreover","so that"],"« Whereas » = alors que (contraste entre deux propositions). Therefore et moreover ne peuvent pas relier deux propositions par une simple virgule ; so that exprime le but."),
+f(T.g,"It is essential that every participant ------- a copy of the agenda before the meeting begins.",["receive","receives","received","will receive"],"Après « it is essential that », on emploie le subjonctif : base verbale sans -s, receive."),
+f(T.v,"The new policy aims to ------- paper consumption by 30 percent over two years.",["reduce","produce","deduce","induce"],"« Reduce consumption » = réduire la consommation. Produce = produire, deduce = déduire, induce = provoquer."),
+f(T.c,"The museum will remain open ------- the renovations.",["throughout","among","beside","toward"],"« Throughout » = pendant toute la durée de. Among, beside et toward n'ont pas ce sens temporel."),
+f(T.g,"Mr. Hale insisted on ------- the contract himself before signing it.",["reading","to read","read","being read"],"« Insist on » est suivi d'un verbe en -ing : reading. « Being read » est passif et ne peut pas avoir de complément d'objet."),
+f(T.w,"The company's ------- growth has attracted the attention of several investors.",["steady","steadily","steadiness","steadied"],"Devant un nom (growth), il faut un adjectif : steady (régulier). Steadily est un adverbe."),
+f(T.v,"Employees who ------- the safety regulations may face disciplinary action.",["violate","vacate","validate","venerate"],"« Violate regulations » = enfreindre des règles. Vacate = quitter, validate = valider, venerate = vénérer."),
+f(T.g,"------- the temperature drop below zero, the pipes must be drained.",["Should","Unless","Whether","Whereas"],"Inversion conditionnelle : « Should the temperature drop… » (= If the temperature should drop). Le verbe reste à la base. Unless, Whether et Whereas ne conviennent pas."),
+f(T.c,"The applicant has strong analytical skills; -------, her experience in sales is limited.",["however","therefore","for example","as a result"],"« However » (cependant) marque l'opposition entre les deux idées. Therefore, for example et as a result n'ont pas ce sens."),
+f(T.w,"The software update will be ------- to all registered users free of charge.",["available","availably","availability","avail"],"Après « will be … to all registered users », on attend l'adjectif available. Availability est un nom."),
+f(T.g,"The firm ------- its headquarters twice since it was founded.",["has relocated","relocated","will relocate","is relocating"],"« Since it was founded » + action répétée jusqu'à aujourd'hui : present perfect, has relocated."),
+f(T.w,"The two companies signed a ------- agreement to share research facilities.",["mutual","mutually","mutuality","mutuals"],"Devant un nom (agreement), on emploie un adjectif : mutual (mutuel). Mutually est un adverbe.")
+];
+var P6b=[
+{kind:"E-mail",title:"",head:["To: Project Team","From: Daniel Okoye","Subject: Revised kickoff schedule"],
+ paras:["Hi all,","I am writing to let you know that the project kickoff meeting has been moved from Tuesday to Thursday at 10:00 A.M. {1} the client's representatives will be traveling on Tuesday, we thought it best to wait until they can attend in person. {2}","Each team lead should prepare a short summary of {3} responsibilities. The meeting is expected to last about two hours, {4} a short break.","Best regards,\nDaniel Okoye"],
+ qs:[
+  f(T.c,"",["Because","Because of","Despite","Unless"],"« Because » introduit une proposition (the client's representatives will be traveling) qui explique le report. Because of exigerait un nom, despite oppose, unless = à moins que."),
+  f(T.s,"",["Please update your calendars accordingly and confirm your attendance by Wednesday noon.","The client was founded in 1998 and now employs over 4,000 people.","Last year's kickoff meeting was held at a hotel near the airport.","Our new office kitchen will be open starting next month."],"Le message annonce un changement de date : demander de mettre à jour les agendas et de confirmer sa présence est la suite logique. Les autres phrases n'ont aucun rapport (histoire du client, ancienne réunion, cuisine)."),
+  f(T.g,"",["his or her","him or her","he or she","hers"],"« His or her » est l'adjectif possessif qui reprend « Each team lead ». Him or her est un complément, he or she un sujet, hers un pronom (sans nom derrière)."),
+  f(T.g,"",["including","included","to include","include"],"« Including a short break » : participe présent à valeur de préposition (y compris). Included, to include et include ne s'intègrent pas dans la phrase.")
+ ]},
+{kind:"Annonce",title:"Evening Courses in Business Writing",head:[],
+ paras:["Lakeshore Community College is pleased to announce a new series of evening courses designed for working professionals. {5} Classes meet twice a week from 6:30 P.M. to 8:30 P.M. at the downtown campus.","Registration is {6} through 15 January, and early enrollment is strongly recommended because places are limited. Students who {7} at least eight of the ten sessions will receive a certificate of completion. Tuition is payable {8} the first class."],
+ qs:[
+  f(T.s,"",["Whether you write reports, e-mails, or proposals, these courses will help you communicate more clearly and persuasively.","The college's library holds more than 200,000 volumes.","Parking is not permitted on the north side of the campus.","Several graduates have since become published novelists."],"La phrase doit présenter l'intérêt des cours (mieux communiquer), ce qui s'enchaîne avec « Classes meet twice a week ». Bibliothèque, parking et romanciers ne concernent pas l'offre."),
+  f(T.w,"",["open","opened","opening","openly"],"« Registration is open » : adjectif attribut (inscriptions ouvertes). Opened est un participe, opening un nom ou participe, openly un adverbe."),
+  f(T.g,"",["attend","attending","attended","attendance"],"« Students who attend » : verbe au présent pluriel après un sujet pluriel. Attending serait incorrect après « who », attendance est un nom."),
+  f(T.c,"",["no later than","as well as","rather than","other than"],"« No later than » = au plus tard (échéance de paiement). As well as = ainsi que, rather than = plutôt que, other than = autre que.")
+ ]},
+{kind:"Article de presse",title:"Harmon Bakery to Open Second Location",head:[],
+ paras:["Harmon Bakery, a family-run business that has served the Westfield neighborhood for nearly 30 years, will open a second location next spring. Owner Teresa Harmon said the decision was prompted by {9} demand for her wholesale orders from local cafés. {10}","Construction is {11} to begin in January, {12} permits are approved by the city council."],
+ qs:[
+  f(T.w,"",["growing","grown","grow","growth"],"« Growing demand » : participe présent adjectival devant un nom (demande croissante). Growth ne s'emploie pas comme adjectif devant « demand »."),
+  f(T.s,"",["The new shop, on Elm Street, will include a small seating area and a kitchen twice the size of the original.","Ms. Harmon's grandfather emigrated to the country in 1952.","Westfield has a population of roughly 22,000 residents.","Bread has been a staple food in many cultures for thousands of years."],"Après la raison de l'ouverture (la demande), la phrase décrit le nouveau magasin, ce qui prépare la phrase sur les travaux. Les autres sont des informations générales sans lien avec le projet."),
+  f(T.w,"",["scheduled","scheduling","schedule","scheduler"],"« Is scheduled to begin » : passif « be scheduled to » (est prévu pour)."),
+  f(T.c,"",["provided that","even though","as if","in order that"],"« Provided that » = à condition que (travaux conditionnés à l'approbation des permis). Even though = bien que, as if = comme si, in order that = afin que.")
+ ]},
+{kind:"Mémo interne",title:"",head:["To: All sales staff","From: Finance Department","Re: Updated travel reimbursement policy"],
+ paras:["Effective 1 December, employees traveling on company business must book flights through the corporate travel portal. Reservations made through other channels {13} reimbursed unless prior approval has been obtained from a department head. {14}","Meal expenses will be reimbursed up to a daily limit of $60; {15}, alcohol purchases are not eligible. Questions regarding this policy should be {16} to the Finance Department."],
+ qs:[
+  f(T.g,"",["will not be","would not have","do not","had not been"],"« Will not be reimbursed » : futur passif négatif. « Do not reimbursed » est incorrect, et les autres formes ne conviennent pas à une règle qui s'applique à partir d'une date future."),
+  f(T.s,"",["This requirement allows the company to negotiate better fares and to monitor travel spending more accurately.","The finance department is located on the third floor of the main building.","Many employees prefer to travel on weekends.","The corporate portal was redesigned two years ago by an outside consultant."],"Après l'obligation de réserver via le portail, la phrase explique la raison (meilleurs tarifs, suivi des dépenses). Les autres phrases sont hors sujet."),
+  f(T.c,"",["however","therefore","for instance","likewise"],"« However » marque le contraste avec la phrase précédente (repas remboursés / alcool exclu). Therefore, for instance et likewise n'ont pas ce sens."),
+  f(T.w,"",["directed","directing","direction","direct"],"« Should be directed to » : passif, adresser des questions à. Directing et direction ne s'intègrent pas, direct est la base verbale.")
+ ]}
+];
+
+/* ===== Livre 3 ===== */
+var P5c=[
+f(T.g,"The new hires, ------- of whom have prior experience, will receive a shortened orientation.",["most","almost","mostly","the most"],"« Most of whom » : quantificateur + pronom relatif, qui reprend « the new hires ». Almost et mostly sont des adverbes ; « the most » ne s'emploie pas ainsi."),
+f(T.c,"------- a recent survey, more than 60 percent of customers prefer online ordering.",["According to","Regarding","Owing","Instead of"],"« According to » + nom = selon. Regarding = concernant, owing exigerait « to », instead of = au lieu de."),
+f(T.g,"Hardly ------- the meeting begun when the fire alarm sounded.",["had","has","did","was"],"Après « Hardly », l'inversion est obligatoire : « Hardly had + sujet + participe passé … when ». Les autres auxiliaires ne conviennent pas au past perfect."),
+f(T.w,"Ms. Aguilar is widely ------- as one of the most innovative designers in the industry.",["regarded","regarding","regards","regard"],"« Be regarded as » = être considéré comme : participe passé après « is widely »."),
+f(T.g,"The manager, ------- you spoke yesterday, has approved the request.",["to whom","whom","who","which"],"Avec « speak », la préposition to est nécessaire, et whom est le pronom pour une personne : « to whom you spoke ». Whom, who et which seuls ne suffisent pas."),
+f(T.w,"The team worked ------- to meet the deadline for the product launch.",["diligently","diligent","diligence","diligences"],"Un adverbe modifie le verbe « worked » : diligently (avec application). Diligent est un adjectif, diligence un nom."),
+f(T.c,"------- the heavy snowfall, all flights were canceled.",["Because of","Because","Although","So that"],"« Because of » + groupe nominal (the heavy snowfall). Because et Although exigent une proposition ; so that = afin que."),
+f(T.g,"Employees ------- vacation requests have not been approved should speak to their supervisors.",["whose","who","which","their"],"« Whose » exprime la possession (les demandes de congés des employés) et se place devant le nom. Who, which et their ne peuvent pas jouer ce rôle."),
+f(T.v,"The consultant's report offers a ------- analysis of the company's financial position.",["thorough","through","though","thought"],"« Thorough » = approfondi. Through (à travers), though (bien que) et thought (pensée) sont des pièges de forme."),
+f(T.w,"The lecture was so ------- that several attendees fell asleep.",["tedious","tediously","tedium","tediousness"],"Structure « so + adjectif + that » : tedious (ennuyeux). Tediously est un adverbe, tedium un nom."),
+f(T.g,"Neither the manager ------- her assistants had been informed of the policy change.",["nor","or","but","and"],"Le corrélatif de « neither » est « nor »."),
+f(T.c,"Tuition fees are payable ------- the first day of class.",["on or before","in spite of","as well as","owing to"],"« On or before » = au plus tard le (échéance). In spite of = malgré, as well as = ainsi que, owing to = à cause de."),
+f(T.c,"------- the new employees were given a tour of the facility, they met their supervisors.",["After","During","Despite","Within"],"« After » introduit une proposition (the new employees were given a tour). During et Despite exigent un nom ; within n'a pas ce sens ici."),
+f(T.w,"The CEO delivered a ------- speech that inspired the entire staff.",["compelling","compelled","compel","compulsion"],"Adjectif devant un nom : compelling (convaincant, captivant). Compelled = contraint, compulsion = obsession."),
+f(T.w,"The company is ------- to hire twenty new employees by the end of the year.",["planning","planned","plan","plans"],"« Be planning to + verbe » : planning. Planned, plan et plans ne s'intègrent pas dans « is … to hire »."),
+f(T.v,"The two firms have agreed to ------- their resources in order to develop the new technology.",["pool","pole","poll","pull"],"« Pool resources » = mettre des ressources en commun. Pole (pôle), poll (sondage) et pull (tirer) ne conviennent pas."),
+f(T.v,"Interns are expected to ------- to the dress code at all times.",["conform","confirm","confine","confront"],"« Conform to » = se conformer à. Confirm = confirmer, confine = limiter, confront = affronter."),
+f(T.g,"The store offers free delivery on ------- order that exceeds $50.",["any","all","every one","those"],"« Any » + nom singulier : « any order that exceeds $50 ». All, every one et those ne s'accordent pas avec « order » au singulier."),
+f(T.g,"The printer ------- when the technician arrived.",["had already been repaired","has already repaired","already repairs","was already repair"],"Le past perfect passif (had already been repaired) exprime une action antérieure à l'arrivée du technicien."),
+f(T.w,"The board's decision was ------- unanimous, with only one abstention.",["virtually","virtual","virtue","virtuous"],"Un adverbe modifie l'adjectif « unanimous » : virtually (pratiquement). Virtual est un adjectif, virtue et virtuous n'ont aucun rapport."),
+f(T.w,"Applicants must ------- proof of residency along with the application form.",["provide","providing","provided","provision"],"Après « must », on attend la base verbale : provide (fournir)."),
+f(T.c,"------- of the new regulations, all companies must submit annual reports.",["In light","On behalf","By means","In place"],"« In light of » = compte tenu de. On behalf of = au nom de, by means of = au moyen de, in place of = à la place de n'ont pas ce sens."),
+f(T.g,"Mr. Brandt would rather ------- the meeting than cancel it.",["postpone","postponing","to postpone","postponed"],"« Would rather + base verbale (+ than + base) » : postpone."),
+f(T.v,"The new policy will ------- all employees, regardless of their position.",["affect","effect","afflict","reflect"],"« Affect » (verbe) = concerner, toucher. Effect est surtout un nom ; afflict = affliger, reflect = refléter."),
+f(T.c,"The software is easy to install; -------, it requires no special training to use.",["moreover","nevertheless","otherwise","instead"],"« Moreover » = de plus : ajoute une information dans le même sens. Nevertheless (cependant), otherwise (sinon) et instead (à la place) n'ont pas ce sens."),
+f(T.v,"The team is ------- confident that the project will finish on schedule.",["quite","quiet","quit","quote"],"« Quite confident » = plutôt sûr. Quiet = silencieux, quit = abandonner, quote = citer : pièges d'orthographe."),
+f(T.v,"Ms. Ono made a ------- effort to meet every client personally.",["concerted","concerned","concerning","concert"],"« A concerted effort » = un effort concerté, soutenu. Concerned = inquiet, concerning = concernant, concert = concert."),
+f(T.g,"The conference, ------- is held annually in Geneva, attracts experts from around the world.",["which","what","where","who"],"« Which » introduit une relative non déterminative après une virgule. What et who ne conviennent pas, where suppose un lieu comme antécédent direct."),
+f(T.v,"The department finished the project ------- budget.",["under","beneath","less","lower"],"« Under budget » = en dessous du budget prévu (expression idiomatique)."),
+f(T.g,"The directors have yet ------- a decision on the proposed merger.",["to make","making","made","make"],"« Have yet to + base verbale » = n'ont pas encore : to make.")
+];
+var P6c=[
+{kind:"Lettre",title:"",head:["Maple & Reid Consulting","14 October","Mr. Antoine Lefèvre"],
+ paras:["Dear Mr. Lefèvre,","On behalf of Maple & Reid Consulting, I am delighted to offer you the position of senior analyst, {1} on 4 January. {2}","Please indicate your acceptance by signing and returning the enclosed copy of this letter {3} 28 October. If you have any questions, please do not hesitate to contact me. We look forward to {4} you to our team."],
+ qs:[
+  f(T.g,"",["beginning","begun","begin","begins"],"« Beginning on 4 January » : participe présent en apposition (commençant le). Begins créerait une phrase mal liée ; begun et begin sont incorrects ici."),
+  f(T.s,"",["Your annual salary will be $78,000, payable in twelve monthly installments.","Maple & Reid was founded by two former university professors.","Our offices are located near several restaurants and shops.","Senior analysts often attend conferences in Europe and Asia."],"Une offre d'emploi précise la rémunération après le poste et la date de début. Les autres phrases décrivent l'entreprise ou le métier sans lien avec l'offre."),
+  f(T.c,"",["by","until","since","during"],"« By 28 October » = au plus tard le 28 octobre (échéance). Until marque la durée, since et during ne vont pas avec une date future."),
+  f(T.g,"",["welcoming","welcome","be welcomed","to welcome"],"« Look forward to + -ing » : ici « to » est une préposition, donc welcoming.")
+ ]},
+{kind:"Article de presse",title:"Riverton Extends Bus Service",head:[],
+ paras:["Riverton's city council voted Monday to extend evening bus service on six major routes, a move that {5} a long-standing complaint from commuters who work late shifts.","The extended hours will begin in March and {6} until midnight on weekdays. {7} Critics, {8}, argue that the money would be better spent on repairing roads."],
+ qs:[
+  f(T.g,"",["addresses","address","addressing","to address"],"« A move that addresses » : le verbe de la relative s'accorde avec « move » (singulier) → addresses."),
+  f(T.g,"",["run","running","ran","runs"],"« Will begin … and run » : après will, les deux verbes se mettent à la base verbale."),
+  f(T.s,"",["Council members said the additional service will be funded by a modest increase in parking fees downtown.","Riverton was named after the river that runs along its eastern edge.","Buses were first introduced in the city in the 1920s.","Several council members have served for more than two decades."],"Après l'annonce de l'extension du service, la suite logique est son financement. Les autres phrases (origine du nom, histoire des bus, ancienneté des élus) sont hors sujet."),
+  f(T.c,"",["however","hence","thus","besides"],"« Critics, however, argue… » : however marque l'opposition entre la décision et ses détracteurs. Hence et thus indiquent une conséquence, besides = d'ailleurs.")
+ ]},
+{kind:"E-mail",title:"",head:["To: All employees","From: Human Resources","Subject: Benefits enrollment"],
+ paras:["The annual benefits enrollment period begins on 1 November and {9} on 15 November. During this time, you may review your current selections and make any changes that better {10} your needs. {11}","Enrollment is completed online through the employee portal. Representatives will be available in Room 204 every weekday from 9:00 A.M. to noon to answer any questions {12} you may have."],
+ qs:[
+  f(T.g,"",["ends","end","ending","to end"],"Le sujet « the enrollment period » est singulier : le verbe coordonné se met à la 3e personne du singulier, ends."),
+  f(T.w,"",["reflect","reflection","reflective","reflectively"],"« Changes that better reflect your needs » : verbe à la base après un sujet pluriel (changes). Reflection est un nom, reflective un adjectif, reflectively un adverbe."),
+  f(T.s,"",["Employees who do not submit a new selection will automatically keep their current coverage for the coming year.","The human resources office was renovated last summer.","The company's health plan has been offered since 2005.","Several employees have asked about parking arrangements."],"Après « make any changes », on précise ce qui se passe sans nouvelle sélection. Les autres phrases n'ont pas de lien avec la procédure d'inscription."),
+  f(T.g,"",["that","what","whom","those"],"« Any questions that you may have » : pronom relatif objet (that). What ne s'emploie pas après un nom, whom est réservé aux personnes, those ne convient pas.")
+ ]},
+{kind:"Annonce",title:"Pearson Natural History Museum",head:[],
+ paras:["The Pearson Natural History Museum is pleased to announce the opening of its newest exhibit, Life Beneath the Waves, on 6 December. {13}","Visitors will be able to explore interactive displays {14} how deep-sea creatures survive in extreme conditions. Because the exhibit is expected to be {15} popular, advance tickets are recommended. Group discounts are {16} to parties of ten or more."],
+ qs:[
+  f(T.s,"",["The exhibit features more than 200 specimens, many of which have never before been displayed to the public.","The museum's gift shop sells postcards and souvenirs.","Admission to the museum is free on the first Sunday of each month.","The museum was established in 1904."],"Après l'annonce de l'exposition, on décrit son contenu. Boutique, entrée gratuite et date de création du musée ne présentent pas l'exposition."),
+  f(T.g,"",["demonstrating","demonstrated","demonstrate","demonstration"],"« Interactive displays demonstrating how… » : participe présent qui qualifie « displays ». Demonstrated aurait un sens passif."),
+  f(T.w,"",["extremely","extreme","extremity","extremes"],"« Extremely popular » : un adverbe modifie l'adjectif popular. Extreme est un adjectif, extremity et extremes sont des noms."),
+  f(T.w,"",["extended","extending","extension","extensive"],"« Are extended to » = sont accordées à. Extending, extension et extensive ne s'intègrent pas dans « are … to parties ».")
+ ]}
+];
+
+/* ===== Livre 4 (plus difficile) ===== */
+var P5d=[
+f(T.g,"The committee members, none of ------- had seen the revised budget, voted to postpone the decision.",["whom","who","which","them"],"Après la préposition « of », le pronom relatif pour des personnes est « whom » : none of whom."),
+f(T.g,"Only after the results were published ------- the researchers realize the error.",["did","had","were","has"],"Après « Only after + proposition », l'inversion est obligatoire : did + sujet + base verbale (did the researchers realize)."),
+f(T.w,"The firm's ------- to quality has earned it numerous industry awards.",["commitment","commit","committed","committing"],"Après le possessif « The firm's », il faut un nom : commitment (engagement)."),
+f(T.w,"The warranty does not cover damage ------- from misuse.",["resulting","resulted","results","result"],"Participe présent qui qualifie « damage » : « damage resulting from misuse » (dégâts résultant d'une mauvaise utilisation)."),
+f(T.v,"The manager has the authority to ------- exceptions to the refund policy.",["grant","grasp","grip","graze"],"« Grant an exception » = accorder une exception. Grasp (saisir), grip (agripper) et graze (effleurer) ne conviennent pas."),
+f(T.g,"Ms. Cho is one of the few employees who ------- fluent in three languages.",["are","is","has been","being"],"Le verbe de la relative s'accorde avec l'antécédent « employees » (pluriel) : are."),
+f(T.c,"The report was prepared ------- the supervision of the finance director.",["under","below","beneath","beyond"],"« Under the supervision of » = sous la supervision de, expression figée."),
+f(T.w,"Management has decided to ------- the deadline for submitting proposals.",["extend","extension","extensive","extensively"],"Après « to », on attend la base verbale : extend (prolonger)."),
+f(T.g,"The more the company expands, ------- it relies on outside suppliers.",["the more","more","most","the most"],"Structure corrélative « the + comparatif, the + comparatif » : the more."),
+f(T.c,"The training session is mandatory ------- of job title.",["regardless","regarding","regardful","regard"],"« Regardless of » = quel que soit. Regarding n'est pas suivi de « of »."),
+f(T.v,"Sales have ------- steadily since the new marketing campaign began.",["risen","raised","arisen","rose"],"« Rise » est intransitif : have risen. Raise demande un complément d'objet, arisen = survenu, rose est un prétérit."),
+f(T.g,"The documents ------- by the legal team are confidential.",["reviewed","reviewing","review","reviews"],"Participe passé qui réduit une relative passive : « the documents (that were) reviewed by the legal team »."),
+f(T.g,"By next June, the company ------- in this building for ten years.",["will have been","has been","will be","was"],"« By next June » + durée « for ten years » appelle le futur antérieur : will have been."),
+f(T.v,"The CEO's remarks were ------- to reassure investors.",["intended","intensive","intentional","intending"],"« Be intended to + verbe » = avoir pour but de. Intentional ne s'emploie pas avec « to + verbe » de cette façon."),
+f(T.w,"Customers are ------- advised to keep their receipts.",["strongly","strong","strength","strengthen"],"Un adverbe modifie le participe « advised » : strongly advised (vivement conseillé)."),
+f(T.c,"The company plans to continue hiring ------- the economy slows.",["even if","so that","as well as","in case of"],"« Even if » = même si, concession devant une proposition. So that exprime le but, as well as = ainsi que, in case of se suit d'un nom."),
+f(T.g,"Please let us know if you have ------- questions about your invoice.",["any","each","much","another"],"« Any » s'emploie dans une proposition conditionnelle avec un nom pluriel. Each, much et another ne se combinent pas avec « questions »."),
+f(T.g,"It was Ms. Rossi ------- proposed the cost-saving plan.",["who","whom","whose","which"],"Dans une phrase clivée, on reprend la personne sujet avec « who »."),
+f(T.w,"The new sales strategy proved ------- in attracting younger customers.",["effective","effectively","effect","effectiveness"],"« Prove » est suivi d'un adjectif attribut : proved effective."),
+f(T.c,"Employees may choose ------- a cash bonus and extra vacation days.",["between","among","within","beside"],"« Between A and B » pour deux possibilités. Among s'emploie pour plus de deux éléments en groupe, within et beside n'ont pas ce sens."),
+f(T.g,"The new software is ------- more user-friendly than the previous version.",["far","very","so","too"],"Pour renforcer un comparatif, on emploie far, much ou even. Very, so et too ne se placent pas devant « more »."),
+f(T.c,"The firm prides itself ------- delivering projects within budget.",["on","in","with","at"],"« Pride oneself on » + -ing, construction figée."),
+f(T.g,"Mr. Lee had his assistant ------- the tickets.",["book","to book","booking","booked"],"Structure causative « have + personne + base verbale » : had his assistant book."),
+f(T.w,"The ------- of the new system will take about three weeks.",["installation","install","installed","installer"],"Après l'article « The » et devant « of », on attend un nom d'action : installation."),
+f(T.c,"Sales declined in the first quarter; -------, they recovered strongly in the second.",["nevertheless","therefore","for example","in addition"],"« Nevertheless » = pourtant, exprime le contraste entre déclin et reprise."),
+f(T.g,"The event, ------- was scheduled for May, has been moved to June.",["which","what","who","whose"],"Relative non déterminative après une virgule : which pour une chose."),
+f(T.v,"Please ------- this notice in a visible location.",["post","pose","posit","pause"],"« Post a notice » = afficher un avis. Pose, posit et pause ont d'autres sens."),
+f(T.g,"The number of applicants ------- risen sharply this year.",["has","have","are","being"],"« The number of » prend un verbe au singulier : has risen. (Avec « a number of », on aurait le pluriel.)"),
+f(T.c,"The proposal was rejected ------- insufficient funding.",["due to","due","because","in order to"],"« Due to » + nom = en raison de. Because se suit d'une proposition, in order to d'un verbe."),
+f(T.g,"Ms. Verma, ------- to lead the project, will begin next week.",["chosen","choosing","choose","having chosen"],"Participe passé à sens passif : « Ms. Verma, (who was) chosen to lead the project »."),
+];
+var P6d=[
+{kind:"Avis aux résidents",title:"Notice of Scheduled Interruption",head:["Westbrook Water Authority"],
+ paras:["Residents of the Eastgate district should be aware that water service {1} between 10:00 P.M. on Thursday and 6:00 A.M. on Friday while crews replace a damaged main. {2}","Customers are advised to store enough water for drinking and cooking {3} the interruption. We regret any inconvenience and appreciate your {4}."],
+ qs:[
+  f(T.g,"",["will be suspended","will suspend","suspending","has suspended"],"Le service d'eau est l'objet de la suspension : futur passif, will be suspended."),
+  f(T.s,"",["Normal pressure should return within two hours of the completion of the work.","The Authority has supplied the region with water since 1962.","Water rates are expected to rise next year.","Several reservoirs are located north of the city."],"Après l'annonce de la coupure, on précise le retour à la normale. Les autres phrases (histoire de l'organisme, tarifs, réservoirs) sont hors sujet."),
+  f(T.c,"",["during","while","whereas","despite"],"« During » + nom (the interruption). While et whereas introduisent une proposition ; despite signifie malgré."),
+  f(T.w,"",["patience","patient","patiently","patients"],"Après le possessif « your », il faut un nom : patience. Patients (patients) a un autre sens.")
+ ]},
+{kind:"E-mail",title:"",head:["To: New employees","From: Priya Nair","Subject: Welcome to Dalton Analytics"],
+ paras:["Welcome to Dalton Analytics! We are thrilled {5} you will be joining our team. On your first day, please report to reception at 9:00 A.M., where you will receive your access badge. {6}","Over the first week, you will meet with department heads and complete several online modules. Please note that these modules {7} before you begin working on client accounts. If you have {8} questions, feel free to contact me."],
+ qs:[
+  f(T.c,"",["that","which","what","whether"],"« Thrilled that + proposition » (ravi que). Which, what et whether ne conviennent pas après cet adjectif."),
+  f(T.s,"",["Your supervisor will then give you a tour and introduce you to your colleagues.","Dalton Analytics recently opened an office in Singapore.","Many of our clients are in the healthcare sector.","The company picnic is held every August."],"La phrase suit la remise du badge et décrit la suite de la première journée. Les autres informations sur l'entreprise ne prolongent pas le déroulé."),
+  f(T.g,"",["must be completed","must complete","must completing","must have complete"],"Les modules reçoivent l'action : passif « must be completed »."),
+  f(T.g,"",["any","every","much","a"],"« Any » + nom pluriel dans une condition. Every et a exigent un singulier, much un indénombrable.")
+ ]},
+{kind:"Article de presse",title:"Tallgrass Foods Cuts Packaging Waste",head:[],
+ paras:["Tallgrass Foods announced Monday that it has reduced its packaging waste by 22 percent over the past two years. The company credits the improvement {9} a redesign of its snack packaging. {10}","Environmental groups have welcomed the news, {11} some argue that the company should set even more ambitious targets. The next phase of the program will focus {12} the beverage division."],
+ qs:[
+  f(T.c,"",["to","with","for","at"],"« Credit something to » = attribuer à. « Credit someone with » aurait l'ordre inverse."),
+  f(T.s,"",["The new bags use about one third less plastic than the old ones while keeping products fresh for the same length of time.","Tallgrass was founded as a bakery in 1974.","Snack sales usually rise during the summer months.","The company's headquarters are located in Denver."],"La phrase explique en quoi le nouvel emballage réduit les déchets. Les autres phrases sont des informations générales sans lien."),
+  f(T.c,"",["although","because","so","unless"],"« Although » introduit une concession. Because, so et unless ne conviennent pas au sens."),
+  f(T.c,"",["on","at","to","for"],"« Focus on » = se concentrer sur.")
+ ]},
+{kind:"Annonce",title:"Pacific Logistics Forum",head:[],
+ paras:["Registration for the Pacific Logistics Forum is now open. This year's event, {13} will take place in Auckland from 4 to 6 June, will feature more than forty speakers from fifteen countries. {14}","Participants who register before 15 March will {15} a 20 percent discount. Please note that cancellations made after 1 May are not eligible for a {16}."],
+ qs:[
+  f(T.g,"",["which","what","who","that"],"Relative non déterminative entre virgules : which. That ne s'emploie pas après une virgule."),
+  f(T.s,"",["Sessions will cover topics such as supply chain resilience, port automation, and sustainable shipping.","Auckland is the largest city in New Zealand.","The forum was first held in Singapore.","Hotel rooms near the venue are generally expensive."],"Après la présentation des intervenants, on décrit le contenu des sessions. Les autres phrases sortent du cadre de l'annonce."),
+  f(T.g,"",["receive","receiving","to receive","received"],"Après « will », la base verbale : will receive."),
+  f(T.w,"",["refund","refunded","refunding","refundable"],"Après « a », il faut un nom : a refund. Refundable est un adjectif.")
+ ]}
+];
+
+/* ===== Partie VII ===== */
+var T7={m:"Idée générale",d:"Détail",i:"Inférence",x:"Textes croisés",n:"Question NOT"};
+var P7=[
+{docs:[{kind:"E-mail",title:"",head:["To: Lorenzo Bianchi, Bianchi Furnishings","From: Hana Moreau, Procurement, Cartwright & Dale","Date: 2 November","Subject: Order 7732, delivery date"],
+ paras:["Dear Mr. Bianchi,","I understand from your message of 30 October that the 200 ergonomic chairs we ordered will not be ready until 20 November. Unfortunately, our new office on Harbor Street opens on 15 November, and we will need seating for at least 120 employees on that day.","Would it be possible to ship 120 chairs by 10 November and send the remaining 80 as soon as they are finished? We are willing to cover the extra freight cost. If you agree, please also issue two separate invoices, one for each shipment, so that our accounting department can process both in the same month.","Thank you for your help.","Hana Moreau"]}],
+ qs:[
+  f(T7.m,"Why did Ms. Moreau write to Mr. Bianchi?",["To ask for part of an order to be delivered earlier","To cancel an order of ergonomic chairs","To complain about the quality of the chairs","To announce a change of office address"],"Elle demande l'expédition de 120 chaises avant le 10 novembre et du reste plus tard : une livraison partielle anticipée. Elle n'annule rien et ne se plaint pas de la qualité."),
+  f(T7.d,"What does Ms. Moreau offer to do?",["Pay additional shipping costs","Accept a smaller number of chairs","Pick up the chairs herself","Pay the invoice in advance"],"« We are willing to cover the extra freight cost » = prendre en charge les frais de transport supplémentaires."),
+  f(T7.d,"What does Ms. Moreau request regarding the invoices?",["That there be one for each shipment","That they be sent by mail","That the total be reduced","That they be paid in two months"],"« Two separate invoices, one for each shipment » : une facture par livraison."),
+  f(T7.i,"What is indicated about Cartwright & Dale?",["It will open a new office on 15 November.","It has recently changed suppliers.","It currently has 200 employees.","It is closing its Harbor Street branch."],"« Our new office on Harbor Street opens on 15 November ». Le nombre 200 correspond aux chaises, pas aux employés.")
+ ]},
+{docs:[{kind:"Avis",title:"Lakeview Tower Fitness Center: Changes Effective 1 December",head:[],
+ paras:["Weekday hours will be extended and will now run from 6:00 A.M. to 10:00 P.M. (previously 7:00 A.M. to 9:00 P.M.). Saturday hours remain 8:00 A.M. to 6:00 P.M. The center will be closed on Sundays for cleaning.","Each tenant may bring one guest per month. Guest passes cost $5 and can be purchased at the front desk. Towel service is now available; tenants must show their building ID card to receive a towel.","Please note that the swimming pool will remain closed until further notice because of repairs. Tenants will be informed by e-mail when it reopens."]}],
+ qs:[
+  f(T7.m,"What is the purpose of the notice?",["To announce changes to the fitness center","To advertise a new swimming pool","To invite tenants to a cleaning event","To explain how to join the fitness center"],"L'avis annonce de nouveaux horaires, un service de serviettes et des invités : des changements au centre de fitness. La piscine est fermée, elle n'est pas nouvelle."),
+  f(T7.d,"What is true about the weekday hours?",["They will start an hour earlier.","They will end an hour earlier.","They will stay the same.","They will start at 7:00 A.M."],"Ouverture à 6 h au lieu de 7 h : une heure plus tôt. La fermeture passe aussi de 21 h à 22 h."),
+  f(T7.d,"How can a tenant bring a guest?",["By buying a pass at the front desk","By registering online","By showing a building ID card","By asking the manager by e-mail"],"« Guest passes cost $5 and can be purchased at the front desk »."),
+  f(T7.n,"What is NOT mentioned in the notice?",["The cost of towel service","The price of a guest pass","The reason the pool is closed","The Sunday closure"],"Le prix du service de serviettes n'est pas indiqué. Le prix du pass invité (5 $), la raison de la fermeture de la piscine (réparations) et la fermeture du dimanche le sont.")
+ ]},
+{docs:[{kind:"Article de presse",title:"A Bakery Back from the Brink",head:[],
+ paras:["When Rosa Delgado took over Cornerstone Bakery in 2018, it was losing money and had only a handful of regular customers on weekdays. Rather than cutting staff, she reduced the menu from forty items to twelve and began baking only after receiving orders placed the evening before. The change cut waste in half.","Within two years the bakery turned a profit, and in 2022 she opened a second branch near the central train station. Ms. Delgado says she has no plans to open more shops. \"I would rather keep the quality high,\" she said. Instead, she intends to start selling frozen dough to restaurants beginning next spring."]}],
+ qs:[
+  f(T7.d,"What did Ms. Delgado do first to improve the bakery?",["She shortened the menu.","She hired more employees.","She opened a second branch.","She lowered her prices."],"« She reduced the menu from forty items to twelve »."),
+  f(T7.d,"According to the article, how did baking to order help the bakery?",["It reduced waste.","It attracted more weekday customers.","It lowered ingredient prices.","It shortened opening hours."],"« The change cut waste in half »."),
+  f(T7.i,"What can be inferred about the second branch?",["It opened four years after Ms. Delgado took over.","It sells only frozen dough.","It replaced the first shop.","It is located inside a restaurant."],"Reprise en 2018, deuxième succursale en 2022 : quatre ans plus tard."),
+  f(T7.d,"What does Ms. Delgado plan to do next spring?",["Sell frozen dough to restaurants","Open a third shop","Rename the bakery","Hire a new manager"],"« She intends to start selling frozen dough to restaurants beginning next spring »."),
+ ]},
+{docs:[{kind:"Conversation par messages",title:"",head:[],
+ paras:["Dan Weber (2:41 P.M.)\nAre you still at the client's site?","Mira Okafor (2:43 P.M.)\nYes, the presentation ran long. Why?","Dan Weber (2:44 P.M.)\nThe printer in Room 3 is jammed again, and I need the signed contract copies for the 4:00 courier.","Mira Okafor (2:46 P.M.)\nI printed a spare set this morning. It's in the blue folder on my desk.","Dan Weber (2:47 P.M.)\nFound it. Only two sets though. We need three.","Mira Okafor (2:49 P.M.)\nThen ask Tessa to copy one set at the front desk. Her machine works.","Dan Weber (2:50 P.M.)\nWill do. Thanks!"]}],
+ qs:[
+  f(T7.m,"Why did Mr. Weber contact Ms. Okafor?",["He needs copies of a contract.","He wants to reschedule a presentation.","He is looking for a courier.","He needs a new printer."],"Il cherche des exemplaires du contrat signé pour le coursier de 16 h, car l'imprimante est bloquée."),
+  f(T7.d,"Where is Ms. Okafor now?",["At a client's site","In Room 3","At the front desk","At her desk"],"Elle répond « Yes » à « Are you still at the client's site? »."),
+  f(T7.i,"At 2:47 P.M., what does Mr. Weber mean when he writes, \"Only two sets though\"?",["The spare copies are not enough.","He found the wrong folder.","Ms. Okafor made a mistake.","The courier arrived early."],"Il lui en faut trois et il n'en a que deux : le jeu de rechange ne suffit pas."),
+  f(T7.d,"What does Ms. Okafor suggest?",["Having Tessa make another copy","Waiting for the printer to be repaired","Delaying the courier","Printing at the client's site"],"« Ask Tessa to copy one set at the front desk »."),
+ ]},
+{docs:[{kind:"Offre d'emploi",title:"Front Desk Supervisor, Seaside Grand Hotel",head:[],
+ paras:["We are seeking an organized and friendly professional to lead our front desk team of eight. The supervisor will schedule staff, handle guest complaints, and train new employees.","Requirements: at least two years of experience in a hotel or similar setting; fluency in English and one other language; availability on weekends.","Benefits: free meals during shifts, discounted rooms for employees and their families, and health insurance after 90 days.","To apply, send your résumé and one letter of reference to careers@seasidegrand.example by 20 November. Interviews will be held during the first week of December."]}],
+ qs:[
+  f(T7.d,"What is a duty of the supervisor?",["Training new employees","Preparing hotel menus","Managing hotel finances","Greeting guests at the door"],"« The supervisor will schedule staff, handle guest complaints, and train new employees »."),
+  f(T7.n,"What is NOT required of applicants?",["A university degree","Weekend availability","Knowledge of a second language","Hotel experience"],"Aucun diplôme n'est demandé. L'expérience (deux ans), la seconde langue et la disponibilité le week-end sont exigées."),
+  f(T7.d,"What should applicants send by 20 November?",["A résumé and a letter of reference","A completed application form","Two letters of reference","A photo and a résumé"],"« Send your résumé and one letter of reference »."),
+  f(T7.i,"What is suggested about the hiring process?",["Interviews will take place in December.","Candidates will be interviewed on 20 November.","All applicants will be hired temporarily.","Applicants must visit the hotel first."],"Les entretiens auront lieu la première semaine de décembre."),
+ ]},
+{docs:[
+  {kind:"E-mail",title:"",head:["To: All staff","From: Julia Ferreira, Human Resources","Date: 28 October","Subject: Staff retreat on 14 November"],
+   paras:["This year's retreat will be held at Pinecrest Lodge, 40 minutes from the office. Buses will leave from the main entrance at 8:15 A.M. and bring everyone back by 6:30 P.M.","Employees who prefer to drive may do so, but parking at the lodge is limited, so please register your vehicle with me by 7 November. Lunch will be provided. Please let me know of any dietary restrictions by the same date.","Use the attached schedule to choose one workshop for the afternoon session."]},
+  {kind:"Programme",title:"Staff Retreat, 14 November",head:[],
+   paras:["8:15 A.M. Bus departure\n9:15 A.M. Welcome and opening speech by Director Samir Haddad\n10:00 A.M. Team-building activities\n12:00 P.M. Lunch\n1:00 P.M. Workshops (choose one): A. Time Management, Cedar Room; B. Effective Presentations, Maple Room; C. Conflict Resolution, Birch Room\n3:00 P.M. Panel discussion on customer feedback\n4:00 P.M. Awards ceremony\n5:30 P.M. Bus departure"]}],
+ qs:[
+  f(T7.m,"What is the purpose of the e-mail?",["To give information about a company event","To invite clients to a conference","To ask employees to take a vacation","To change a work schedule"],"L'e-mail donne les détails pratiques du séminaire d'entreprise : transport, parking, repas, ateliers."),
+  f(T7.d,"What are employees who drive asked to do?",["Register their vehicles by 7 November","Park at the main entrance","Leave before the buses","Arrive at 9:15 A.M."],"« Please register your vehicle with me by 7 November »."),
+  f(T7.d,"Who will give the opening speech?",["Samir Haddad","Julia Ferreira","The lodge manager","A customer"],"Le programme indique « Welcome and opening speech by Director Samir Haddad »."),
+  f(T7.x,"What is most likely true about employees who take the bus?",["They will reach the lodge before the welcome session starts.","They will miss the team-building activities.","They will eat lunch on the bus.","They will return after 7:00 P.M."],"Départ à 8 h 15 et trajet de 40 minutes (e-mail) : arrivée vers 8 h 55, avant l'accueil de 9 h 15 (programme)."),
+  f(T7.x,"What will employees do after lunch?",["Attend a workshop of their choice","Take part in team-building activities","Listen to the opening speech","Receive their awards"],"Le programme place les ateliers à 13 h, et l'e-mail demande d'en choisir un pour l'après-midi."),
+ ]},
+{docs:[
+  {kind:"Avis client",title:"Marlowe Inn, 2 stars out of 5",head:["Posted by Kevin Tran on 3 October"],
+   paras:["I stayed at the Marlowe Inn for a three-day conference in September. The location is excellent, five minutes from the convention center, and the staff were courteous. However, my room was on the ground floor next to the ice machine, and I could hardly sleep. When I asked to change rooms, I was told the hotel was fully booked. Breakfast was also disappointing: the hot items were cold by 8:00 A.M. I probably will not return."]},
+  {kind:"Réponse de la direction",title:"",head:["Posted by Elena Park, General Manager, on 5 October"],
+   paras:["Dear Mr. Tran, thank you for your feedback. I apologize for the noise you experienced. Our records show that your conference week was our busiest of the year, which is why we could not move you. We have since relocated the ice machines to a quieter area and added a second heating station at breakfast.","I would like to offer you a complimentary one-night stay on your next visit. Please contact me directly at the front desk. Sincerely, Elena Park"]}],
+ qs:[
+  f(T7.d,"What does Mr. Tran say about the Marlowe Inn?",["It is close to the convention center.","It charged him extra for parking.","It offered him a free upgrade.","It has a noisy breakfast room."],"« The location is excellent, five minutes from the convention center »."),
+  f(T7.d,"Why was Mr. Tran unable to change rooms?",["The hotel had no rooms available.","He arrived too late.","The front desk was closed.","He refused a room upgrade."],"On lui a répondu que l'hôtel était complet."),
+  f(T7.d,"What has the hotel done since Mr. Tran's stay?",["It moved the ice machines.","It repainted the rooms.","It changed breakfast hours.","It hired new staff."],"« We have since relocated the ice machines »."),
+  f(T7.d,"What does Ms. Park offer Mr. Tran?",["A free night on his next stay","A refund for the conference","A free breakfast","A larger room"],"« A complimentary one-night stay on your next visit »."),
+  f(T7.x,"What is suggested about Mr. Tran's visit?",["It took place during the hotel's busiest week.","It lasted a full week.","It was his first stay at the hotel.","It was paid for by the hotel."],"Selon Mme Park, la semaine de la conférence de M. Tran était la plus chargée de l'année."),
+ ]},
+{docs:[{kind:"Mémo",title:"",head:["To: Department heads","From: Office Services","Date: 10 November","Re: New recycling program"],
+ paras:["Starting 1 December, individual desk bins will be removed. Each floor will have shared stations with separate containers for paper, plastic, and general waste.","Staff who need to dispose of confidential papers should place them in the locked gray bins, which will be emptied weekly by a certified company. Floor wardens will be available to answer questions during the first month of the program.","Department heads are asked to share this memo with their teams by 25 November and to nominate a warden for their floor by 18 November."]}],
+ qs:[
+  f(T7.m,"What is the memo mainly about?",["A change in how waste is collected","A new schedule for cleaning staff","A plan to reduce printing costs","The hiring of floor wardens"],"Le mémo présente le nouveau programme de recyclage : suppression des poubelles individuelles et conteneurs partagés."),
+  f(T7.d,"What will happen on 1 December?",["Desk bins will be removed.","Gray bins will be emptied.","Floor wardens will be hired.","A certified company will visit."],"« Starting 1 December, individual desk bins will be removed »."),
+  f(T7.d,"What should employees do with confidential papers?",["Put them in locked gray bins","Take them to Office Services","Shred them at their desks","Place them in the paper container"],"« Place them in the locked gray bins »."),
+  f(T7.d,"What are department heads asked to do by 18 November?",["Name a warden for their floor","Send the memo to their teams","Remove their desk bins","Attend a training session"],"Avant le 18 novembre : désigner un responsable d'étage. Avant le 25 : transmettre le mémo aux équipes."),
+ ]}
+];
+
+P7.push(
+{docs:[{kind:"Annonce",title:"Greenway Office Supplies: Spring Sale",head:[],
+ paras:["From 3 to 16 April, all printer paper and ink cartridges are 25 percent off at every Greenway store. Customers who spend more than $150 in a single purchase will also receive free next-day delivery anywhere in the city.","Members of the Greenway Business Club can access the sale prices online starting 1 April, two days before the general public."]}],
+ qs:[
+  f(T7.d,"What is offered to customers who spend more than $150?",["Free delivery","A membership card","An extra discount on ink","A gift certificate"],"« Customers who spend more than $150 … will also receive free next-day delivery »."),
+  f(T7.i,"What is suggested about Greenway Business Club members?",["They can buy sale items before other customers.","They never pay delivery fees.","They receive 50 percent off paper.","They must shop in stores only."],"Les membres accèdent aux prix soldés dès le 1er avril, deux jours avant le grand public (3 avril).")
+ ]},
+{docs:[{kind:"Lettre",title:"",head:["Northbridge Engineering Society","22 Carlton Road, Leeds","9 September","Dr. Amara Nwosu, Department of Civil Engineering, Halden University"],
+ paras:["Dear Dr. Nwosu,","On behalf of the Northbridge Engineering Society, I would like to invite you to deliver the keynote address at our annual conference on 21 November. Your recent work on flood-resistant bridge design has attracted considerable interest among our members, and it fits perfectly with this year's theme, \"Building for a Changing Climate.\"","The society will cover your travel costs and two nights' accommodation at the Kingsley Hotel, which is connected to the conference venue. We would be grateful if you could confirm your availability by 30 September so that we can finalize the printed program.","Yours sincerely,\nPaul Hendry, Conference Chair"]}],
+ qs:[
+  f(T7.m,"What is the purpose of the letter?",["To invite a speaker to an event","To announce a new conference venue","To request a research report","To offer a university position"],"« I would like to invite you to deliver the keynote address » : c'est une invitation à intervenir."),
+  f(T7.d,"Why was Dr. Nwosu chosen?",["Her research matches the conference theme.","She founded the society.","She organized last year's conference.","She lives near the venue."],"Ses travaux sur les ponts résistants aux inondations « fit perfectly with this year's theme »."),
+  f(T7.d,"Why is Dr. Nwosu asked to reply by 30 September?",["So that the program can be printed","So that her hotel room can be booked","So that she can be paid in advance","So that the venue can be changed"],"« So that we can finalize the printed program »."),
+ ]},
+{docs:[
+  {kind:"Offre d'emploi",title:"Marketing Coordinator, Kestrel Media (Manchester)",head:[],
+   paras:["Kestrel Media is looking for a marketing coordinator to plan and run campaigns for our travel and tourism clients.","Requirements: at least three years of experience in marketing; strong skills in design software; excellent writing skills. Knowledge of Spanish is an advantage.","Send your CV to hr@kestrelmedia.example by 15 March. Interviews will be held from 24 to 26 March."]},
+  {kind:"E-mail",title:"",head:["To: hr@kestrelmedia.example","From: Lucas Brennan","Date: 12 March","Subject: Application, Marketing Coordinator"],
+   paras:["Dear Hiring Team,","Please find attached my CV for the marketing coordinator position. I have spent the last four years designing promotional campaigns for a travel agency in Leeds, and I am fluent in Spanish.","Please note that I will be attending a trade fair in Madrid on 24 and 25 March, so I would only be available for an interview on 26 March.","Kind regards,\nLucas Brennan"]},
+  {kind:"E-mail",title:"",head:["To: Lucas Brennan","From: Rhea Patel, Head of Marketing, Kestrel Media","Date: 18 March","Subject: Interview invitation"],
+   paras:["Dear Mr. Brennan,","Thank you for your application. I am pleased to invite you to an interview on 26 March at 2:00 P.M. in Room 5B, on the fourth floor of our building.","Please bring examples of three recent campaigns you have designed. Visitors may park in the underground garage; the receptionist will validate your parking ticket.","Best regards,\nRhea Patel"]}],
+ qs:[
+  f(T7.d,"According to the job posting, what is required for the position?",["Skills in design software","A degree in journalism","Experience managing a team","Willingness to travel abroad"],"L'offre exige « strong skills in design software ». Les autres éléments ne sont pas mentionnés."),
+  f(T7.x,"Which of Mr. Brennan's qualifications does the job posting describe as an advantage?",["His knowledge of Spanish","His experience at a trade fair","His degree in marketing","His contacts in Leeds"],"L'offre indique « Knowledge of Spanish is an advantage », et M. Brennan écrit « I am fluent in Spanish »."),
+  f(T7.x,"Why was Mr. Brennan's interview most likely scheduled on 26 March?",["He is unavailable on the other interview days.","Ms. Patel is away on 24 March.","Room 5B is booked on 25 March.","He applied after the deadline."],"Les entretiens ont lieu du 24 au 26 mars (offre), et il sera à Madrid les 24 et 25 (son e-mail)."),
+  f(T7.d,"What is Mr. Brennan asked to bring?",["Examples of his recent work","A letter of reference","A copy of his passport","A completed application form"],"« Please bring examples of three recent campaigns you have designed »."),
+  f(T7.n,"What is NOT mentioned in Ms. Patel's e-mail?",["The salary for the position","The interview location","Parking arrangements","The interview time"],"Le salaire n'est jamais mentionné. Le lieu (Room 5B), l'heure (14 h) et le parking le sont.")
+ ]},
+{docs:[
+  {kind:"Tarifs",title:"Olive Branch Catering: Corporate Lunch Packages",head:[],
+   paras:["Classic, $14 per person: sandwiches, green salad, fresh fruit\nDeluxe, $19 per person: Classic package plus soup of the day and dessert\nPremium, $25 per person: hot main course, dessert and beverages","All packages require a minimum of 15 guests. Orders must be placed at least 48 hours in advance. Delivery is free for orders over $400; otherwise, a $30 fee applies."]},
+  {kind:"Bon de commande",title:"Order no. 2291",head:[],
+   paras:["Customer: Fairmont Legal Partners (contact: Owen Clarke)\nOrder placed: Monday, 9 June\nEvent: Thursday, 12 June, 12:30 P.M.\nPackage: Deluxe\nNumber of guests: 25 (including 5 vegetarian meals)\nTotal: $475\nDelivery: included"]},
+  {kind:"E-mail",title:"",head:["To: Owen Clarke","From: Nadia Rossi, Olive Branch Catering","Date: 10 June","Subject: Your order no. 2291"],
+   paras:["Dear Mr. Clarke,","Thank you for your order. Unfortunately, our soup supplier has informed us that it cannot deliver on Thursday. We can replace the soup with a seasonal salad at no extra charge. Alternatively, we can upgrade your order to our Premium package for only $3 more per person.","Please let me know which option you prefer by Wednesday morning.","Best regards,\nNadia Rossi"]}],
+ qs:[
+  f(T7.d,"What is true about all of the lunch packages?",["They require at least 15 guests.","They include beverages.","They can be ordered on the same day.","They include a hot main course."],"« All packages require a minimum of 15 guests ». Les boissons et le plat chaud ne sont inclus que dans Premium."),
+  f(T7.x,"Why was Fairmont Legal Partners not charged a delivery fee?",["Its order total was more than $400.","The event takes place on a Thursday.","It ordered vegetarian meals.","It is a regular customer."],"La commande s'élève à 475 $ (bon de commande) et la livraison est gratuite au-delà de 400 $ (tarifs)."),
+  f(T7.x,"Which part of the order cannot be provided as planned?",["The soup","The dessert","The sandwiches","The vegetarian meals"],"Le menu Deluxe comprend la soupe du jour (tarifs), et le fournisseur de soupe ne peut pas livrer jeudi (e-mail)."),
+  f(T7.x,"What is indicated about the upgrade offered by Ms. Rossi?",["It costs half the usual price difference.","It is offered at no extra charge.","It costs the same as the normal difference.","It is available only for vegetarian meals."],"Entre Deluxe (19 $) et Premium (25 $), l'écart normal est de 6 $ ; Mme Rossi propose 3 $ seulement, soit la moitié."),
+  f(T7.d,"By when should Mr. Clarke reply?",["Wednesday morning","Monday afternoon","Thursday at 12:30 P.M.","Within 48 hours of the event"],"« Please let me know … by Wednesday morning »."),
+ ]},
+{docs:[
+  {kind:"Article de presse",title:"Harborfest Moves to Pier 4",head:[],
+   paras:["This year's Harborfest will take place from 8 to 10 August at the newly renovated Pier 4, since Riverside Park, its usual home, is closed for renovation. Organizer Gwen Alvarez said the new site has room for 40 food vendors, twice as many as last year.","Shuttle buses will run from Central Station every 15 minutes. Admission to the festival is free, but tickets for the evening concerts on the main stage cost $10."]},
+  {kind:"Programme",title:"Harborfest Schedule",head:[],
+   paras:["Friday 8 August: 6:00 P.M. Opening ceremony with Mayor Ken Ito · 8:00 P.M. Concert: The Marigolds (main stage)\nSaturday 9 August: 11:00 A.M. Sailing lessons for children (free, registration required) · 2:00 P.M. Cooking demonstration by chef Luis Ortega · 8:00 P.M. Concert: Northern Lights Orchestra (main stage)\nSunday 10 August: 10:00 A.M. Fun run · 9:00 P.M. Fireworks (cancelled in case of strong wind)"]},
+  {kind:"Avis en ligne",title:"",head:["Posted by Priya Shah on 11 August"],
+   paras:["I went to Harborfest with my two children on Saturday. The shuttle from Central Station was quick and convenient, and my kids loved their morning activity on the water, although we had to register two weeks in advance. The food area was huge.","My only disappointment was the evening concert: the sound system kept cutting out, and I don't think it was worth the ticket price. We had planned to come back for the fireworks the next day, but they were called off because of the weather."]}],
+ qs:[
+  f(T7.m,"What is the article mainly about?",["Changes to an annual event","The renovation of a park","A new train station","A cooking competition"],"L'article annonce le nouveau lieu du festival, le nombre de stands et les navettes : des changements apportés à un événement annuel."),
+  f(T7.d,"According to the article, why is the festival being held at Pier 4?",["Its usual site is closed.","Pier 4 is closer to the station.","The organizers wanted fewer vendors.","The mayor requested the change."],"« Riverside Park, its usual home, is closed for renovation »."),
+  f(T7.x,"What activity did Ms. Shah's children most likely do?",["Take sailing lessons","Take part in a fun run","Watch a cooking demonstration","Attend the opening ceremony"],"Samedi matin, sur l'eau, avec inscription préalable : ce sont les cours de voile pour enfants de 11 h (programme)."),
+  f(T7.x,"Which performance did Ms. Shah most likely attend?",["The Northern Lights Orchestra concert","The Marigolds concert","Chef Ortega's demonstration","Mayor Ito's speech"],"Elle était au festival samedi et parle du concert du soir : samedi à 20 h, c'est le Northern Lights Orchestra."),
+  f(T7.x,"What can be inferred about the weather on 10 August?",["It was too windy for fireworks.","It rained during the fun run.","It was unusually hot.","It was foggy all morning."],"Le feu d'artifice est annulé « in case of strong wind » (programme), et il a été annulé à cause de la météo (avis) : il y avait trop de vent."),
+ ]}
+);
+
+var BOOKS={"1":{p5:P5,p6:P6},"2":{p5:P5b,p6:P6b},"3":{p5:P5c,p6:P6c},"4":{p5:P5d,p6:P6d}};
+function pool(book,k){
+  if(book==="mix")return [].concat(BOOKS["1"][k],BOOKS["2"][k],BOOKS["3"][k],BOOKS["4"][k]);
+  return BOOKS[book][k];
+}
+function bookLabel(b){return b==="mix"?"Mélange":"Livre "+(b||"1");}
+
+/* Utilitaires */
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function typo(s){return String(s).replace(/'/g,"’");}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function pad(n){return (n<10?"0":"")+n;}
+function fmt(s){return pad(Math.floor(s/60))+":"+pad(s%60);}
+function loadHist(){try{return JSON.parse(localStorage.getItem(KEY)||"[]");}catch(e){return [];}}
+function saveHist(){try{var h=loadHist();h.unshift({d:Date.now(),book:S.book,part:S.part,pace:S.pace,ok:S.ok,n:S.qs.length,sec:S.elapsed});localStorage.setItem(KEY,JSON.stringify(h.slice(0,8)));}catch(e){}}
+function partsOf(part){return part==="all"?[5,6,7]:(part==="p56"||part==="both")?[5,6]:part==="p5"?[5]:part==="p6"?[6]:[7];}
+function budgetOf(p,pace){var k=PACE[pace].f;return k?Math.round(BASE["p"+p]*k/60)*60:0;}
+function limitFor(part,pace){return partsOf(part).reduce(function(a,p){return a+budgetOf(p,pace);},0);}
+function partLabel(p){return {all:"Parties V à VII",p56:"Parties V + VI",both:"Parties V + VI",p5:"Partie V",p6:"Partie VI",p7:"Partie VII"}[p]||"Partie V";}
+
+var app=document.getElementById("app");
+var S=null,iv=null,setup={part:"all",pace:"exam",book:"1"};
+
+/* Construction d'une session */
+function mkOpts(arr){return shuffle(arr.map(function(t,i){return {t:t,ok:i===0};}));}
+function build(part,book){
+  var qs=[],groups=[],n=101;
+  if(partsOf(part).indexOf(5)>-1){
+    var g5={type:5,qs:[]};
+    shuffle(pool(book,"p5")).slice(0,30).forEach(function(it){
+      var q={i:qs.length,n:n++,part:5,tag:it.tag,text:it.q,opts:mkOpts(it.o),e:it.e,ans:null};
+      qs.push(q);g5.qs.push(q);
+    });
+    groups.push(g5);
+  }
+  if(partsOf(part).indexOf(6)>-1){
+    n=131;
+    var g6={type:6,passages:[]};
+    shuffle(pool(book,"p6")).slice(0,4).forEach(function(p){
+      var pp={kind:p.kind,title:p.title,head:p.head,paras:p.paras,qs:[]};
+      p.qs.forEach(function(it){
+        var q={i:qs.length,n:n++,part:6,tag:it.tag,ins:it.tag===T.s,opts:mkOpts(it.o),e:it.e,ans:null};
+        qs.push(q);pp.qs.push(q);
+      });
+      g6.passages.push(pp);
+    });
+    groups.push(g6);
+  }
+  if(partsOf(part).indexOf(7)>-1){
+    n=147;
+    var g7={type:7,passages:[]};
+    shuffle(P7).sort(function(a,b){return a.docs.length-b.docs.length;}).forEach(function(p){
+      var pp={docs:p.docs,qs:[]};
+      p.qs.forEach(function(it){
+        var q={i:qs.length,n:n++,part:7,tag:it.tag,text:it.q,opts:mkOpts(it.o),e:it.e,ans:null};
+        qs.push(q);pp.qs.push(q);
+      });
+      g7.passages.push(pp);
+    });
+    groups.push(g7);
+  }
+  return {qs:qs,groups:groups};
+}
+
+/* Écran d'accueil */
+function timeLabel(part,pace){var s=limitFor(part,pace);return s?Math.round(s/60)+" min":"Sans limite";}
+function tile(name,val,title,sub,checked,timeAttr){
+  return '<label class="tile"><input type="radio" name="'+name+'" value="'+val+'"'+(checked?" checked":"")+'><span class="tin"><b>'+title+'</b><span>'+sub+'</span>'+(timeAttr?'<em data-t="'+val+'">'+timeLabel(val,setup.pace)+'</em>':'')+'</span></label>';
+}
+function renderStart(){
+  clearInterval(iv);S=null;
+  var hist=loadHist();
+  var h='<div class="start"><p class="kick">TOEIC · Reading</p><h1>Parties V, VI et VII</h1>'+
+  '<p class="lead">Le format de l’épreuve réelle : 100 questions en 75 minutes. Phrases à compléter (30), textes à trous (16), puis compréhension de documents simples, doubles et triples (54). Tu coches une réponse par question, le chrono tourne, la correction détaillée s’affiche à la fin. Les lettres des choix sont mélangées à chaque essai.</p>'+
+  '<fieldset><legend>Livre</legend><div class="tiles">'+
+   tile("book","1","Livre 1","30 phrases · 4 textes",setup.book==="1",false)+
+   tile("book","2","Livre 2","30 phrases · 4 textes",setup.book==="2",false)+
+   tile("book","3","Livre 3","30 phrases · 4 textes",setup.book==="3",false)+
+   tile("book","4","Livre 4","30 phrases · 4 textes · niveau difficile",setup.book==="4",false)+
+   tile("book","mix","Mélange","Tirage au hasard dans les 4 livres",setup.book==="mix",false)+
+  '</div></fieldset>'+
+  '<fieldset><legend>Épreuve</legend><div class="tiles">'+
+   tile("part","all","V + VI + VII","100 questions · épreuve complète",setup.part==="all",true)+
+   tile("part","p56","V + VI","46 questions · Q101 à Q146",setup.part==="p56",true)+
+   tile("part","p5","Partie V","30 questions · phrases à compléter",setup.part==="p5",true)+
+   tile("part","p6","Partie VI","16 questions · 4 textes à trous",setup.part==="p6",true)+
+   tile("part","p7","Partie VII","54 questions · 29 simples, 10 doubles, 15 triples",setup.part==="p7",true)+
+  '</div></fieldset>'+
+  '<fieldset><legend>Rythme</legend><div class="tiles">'+
+   tile("pace","exam","Examen","75 min : 11 V · 9 VI · 55 VII",setup.pace==="exam")+
+   tile("pace","soft","Souple","50 % de temps en plus",setup.pace==="soft")+
+   tile("pace","free","Sans limite","Le chrono compte le temps passé",setup.pace==="free")+
+  '</div></fieldset>'+
+  '<div class="go"><button type="button" class="btn big" data-act="start">Commencer</button><p class="tl" id="tl"></p></div>'+
+  '<p class="note">Les questions sont originales, écrites dans l’esprit du TOEIC (grammaire, formes de mots, vocabulaire, connecteurs, insertion de phrase). Elles ne reprennent aucun sujet officiel. La Partie VII est commune aux 4 livres (10 textes simples, 2 doubles, 3 triples), avec l’ordre et les lettres mélangés.</p>';
+  if(hist.length){
+    h+='<p class="hs">Derniers essais</p><ul class="hist">'+hist.map(function(x){
+      var d=new Date(x.d).toLocaleDateString("fr-FR",{day:"numeric",month:"short"});
+      return '<li><span>'+esc(d)+'</span><span>'+esc(bookLabel(x.book)+" · "+partLabel(x.part))+'</span><b>'+x.ok+"/"+x.n+'</b><span>'+fmt(x.sec)+'</span></li>';
+    }).join("")+'</ul>';
+  }
+  h+='</div>';
+  app.innerHTML=h;
+  refreshTimes();
+  window.scrollTo(0,0);
+}
+function refreshTimes(){
+  var els=app.querySelectorAll("[data-t]");
+  for(var i=0;i<els.length;i++){els[i].textContent=timeLabel(els[i].getAttribute("data-t"),setup.pace);}
+  var tl=document.getElementById("tl");
+  if(tl){var s=limitFor(setup.part,setup.pace);tl.textContent=s?"Temps imparti : "+fmt(s):"Sans limite de temps";}
+}
+
+/* Épreuve */
+function optsHTML(q){
+  var long=q.opts.some(function(o){return o.t.length>46;});
+  return '<div class="opts'+(long?" long":"")+'" role="group" aria-label="Choix pour la question '+q.n+'">'+
+    q.opts.map(function(o,k){
+      return '<button type="button" class="opt" data-q="'+q.i+'" data-k="'+k+'" aria-pressed="'+(q.ans===k)+'"><span class="bub">'+L[k]+'</span><span class="ot">'+esc(typo(o.t))+'</span></button>';
+    }).join("")+'</div>';
+}
+function gapText(t,fill){
+  var s=esc(typo(t));
+  return s.replace("-------",fill?'<mark class="fill">'+esc(typo(fill))+'</mark>':'<span class="gap" aria-label="blank"></span>');
+}
+function docHTML(p,filled){
+  var h='<div class="doc"><p class="dk">'+esc(p.kind)+'</p>';
+  if(p.head&&p.head.length)h+='<div class="meta">'+p.head.map(function(x){return esc(typo(x));}).join("<br>")+'</div>';
+  if(p.title)h+='<h3>'+esc(typo(p.title))+'</h3>';
+  h+=p.paras.map(function(t){
+    return '<p>'+esc(typo(t)).replace(/\n/g,"<br>").replace(/\{(\d+)\}/g,function(m,k){
+      var q=p.qs[(+k-1)%4];
+      if(filled){var c=q.opts.filter(function(o){return o.ok;})[0].t;return '<mark class="fill"><sup>'+q.n+'</sup>'+esc(typo(c))+'</mark>';}
+      return '<span class="blank" id="b'+q.n+'"><i>'+q.n+'</i></span>';
+    })+'</p>';
+  }).join("");
+  return h+'</div>';
+}
+function budgetHTML(g){return g.budget?'<p class="bd">Temps conseillé : '+Math.round(g.budget/60)+' min · à terminer avant '+fmt(g.endAt)+'</p>':"";}
+function docPlain(d,label){
+  var h='<div class="doc"><p class="dk">'+(label?esc(label)+" · ":"")+esc(d.kind)+'</p>';
+  if(d.head&&d.head.length)h+='<div class="meta">'+d.head.map(function(x){return esc(typo(x));}).join("<br>")+'</div>';
+  if(d.title)h+='<h3>'+esc(typo(d.title))+'</h3>';
+  h+=d.paras.map(function(t){return '<p>'+esc(typo(t)).replace(/\n/g,"<br>")+'</p>';}).join("");
+  return h+'</div>';
+}
+function docsHTML(p){return p.docs.map(function(d,i){return docPlain(d,p.docs.length>1?"Texte "+(i+1):"");}).join("");}
+function part7HTML(g){
+  var nq=g.passages.reduce(function(a,p){return a+p.qs.length;},0);
+  var h='<section class="part" id="part7"><div class="ph"><p class="kick">Part 7</p><h2>Reading Comprehension</h2>'+
+  '<p class="dir">Directions: Read the texts. Choose the best answer for each question.</p>'+
+  '<p class="fr">Questions 147 à '+(146+nq)+' · textes simples, puis doubles, puis triples.</p>'+budgetHTML(g)+'</div>';
+  g.passages.forEach(function(p){
+    h+=docsHTML(p)+'<ol class="qs">'+p.qs.map(function(q){
+      return '<li class="q" id="q'+q.n+'"><span class="qn">'+q.n+'</span><div><p class="qt">'+esc(typo(q.text))+'</p>'+optsHTML(q)+'</div></li>';
+    }).join("")+'</ol>';
+  });
+  return h+'</section>';
+}
+function part5HTML(g){
+  return '<section class="part" id="part5"><div class="ph"><p class="kick">Part 5</p><h2>Incomplete Sentences</h2>'+
+  '<p class="dir">Directions: Choose the word or phrase that best completes each sentence.</p>'+
+  '<p class="fr">Questions 101 à 130 · une seule réponse par question, tu peux décocher en recliquant.</p>'+budgetHTML(g)+'</div>'+
+  '<ol class="qs">'+g.qs.map(function(q){
+    return '<li class="q" id="q'+q.n+'"><span class="qn">'+q.n+'</span><div><p class="qt">'+gapText(q.text)+'</p>'+optsHTML(q)+'</div></li>';
+  }).join("")+'</ol></section>';
+}
+function part6HTML(g){
+  var h='<section class="part" id="part6"><div class="ph"><p class="kick">Part 6</p><h2>Text Completion</h2>'+
+  '<p class="dir">Directions: Read each text. Choose the word, phrase or sentence that best fills each numbered blank.</p>'+
+  '<p class="fr">Questions 131 à 146 · quatre textes, quatre blancs par texte.</p>'+budgetHTML(g)+'</div>';
+  g.passages.forEach(function(p){
+    h+=docHTML(p,false)+'<div class="pq">'+p.qs.map(function(q){
+      return '<div class="q'+(q.ins?" ins":"")+'" id="q'+q.n+'" role="group" aria-label="Question '+q.n+'"><span class="qn">'+q.n+'</span><div>'+optsHTML(q)+'</div></div>';
+    }).join("")+'</div>';
+  });
+  return h+'</section>';
+}
+function sheetHTML(){
+  var h='<aside class="omr" aria-label="Feuille de réponses"><h2>Feuille de réponses</h2>';
+  S.groups.forEach(function(g){
+    var qs=g.type===5?g.qs:g.passages.reduce(function(a,p){return a.concat(p.qs);},[]);
+    h+='<div class="sec">PART '+g.type+'</div>';
+    qs.forEach(function(q){
+      h+='<button type="button" class="row" data-jump="'+q.n+'" id="sr'+q.i+'" aria-label="Aller à la question '+q.n+'"><span class="n">'+q.n+'</span>'+
+        [0,1,2,3].map(function(k){return '<span class="b'+(q.ans===k?" on":"")+'">'+L[k]+'</span>';}).join("")+'</button>';
+    });
+  });
+  return h+'</aside>';
+}
+function renderTest(){
+  var body="";
+  S.groups.forEach(function(g){body+=g.type===5?part5HTML(g):g.type===6?part6HTML(g):part7HTML(g);});
+  app.innerHTML='<header class="bar"><div class="bar-in">'+
+    '<div class="brand"><b>TOEIC Reading</b><span>'+bookLabel(S.book)+' · '+partLabel(S.part)+' · '+PACE[S.pace].label+'</span></div>'+
+    '<div class="clock" id="ck" data-s="ok"><span id="tm" role="timer" aria-live="off">'+fmt(S.limit||0)+'</span><span class="cs"><span class="cl">'+(S.limit?"restant":"écoulé")+'</span><span class="cl" id="pz"></span><button type="button" class="lnk" data-act="tg">Masquer</button></span></div>'+
+    '<div class="pn" aria-label="Aller à une partie">'+S.groups.map(function(g){return '<button type="button" data-part="'+g.type+'">'+({5:"V",6:"VI",7:"VII"}[g.type])+'</button>';}).join("")+'</div>'+
+    '<div class="prog"><span id="cnt"></span><div class="track"><i id="pb"></i></div></div>'+
+    '<div class="acts"><button type="button" class="btn ghost" data-act="next">Sans réponse</button><button type="button" class="btn" data-act="fin">Terminer</button></div>'+
+    '</div><div class="confirm" id="cf" hidden><div class="bar-in"><p id="cfn"></p><div class="acts"><button type="button" class="btn ghost" data-act="finno">Continuer</button><button type="button" class="btn" data-act="finyes">Terminer quand même</button></div></div></div></header>'+
+    '<div class="wrap has-omr"><main class="booklet">'+body+'</main>'+sheetHTML()+'</div>';
+  updateProgress();
+  window.scrollTo(0,0);
+}
+function startTest(){
+  var b=build(setup.part,setup.book);
+  var cum=0;
+  b.groups.forEach(function(g){var bd=budgetOf(g.type,setup.pace);cum+=bd;g.budget=bd;g.endAt=cum;});
+  S={qs:b.qs,groups:b.groups,part:setup.part,pace:setup.pace,book:setup.book,limit:limitFor(setup.part,setup.pace),t0:Date.now(),done:false};
+  renderTest();
+  clearInterval(iv);iv=setInterval(tick,500);tick();
+}
+function updateProgress(){
+  var a=S.qs.filter(function(q){return q.ans!==null;}).length,n=S.qs.length;
+  var c=document.getElementById("cnt"),p=document.getElementById("pb");
+  if(c)c.textContent=a+"/"+n;
+  if(p)p.style.width=(a/n*100)+"%";
+}
+function sync(q){
+  var bs=app.querySelectorAll('.opt[data-q="'+q.i+'"]');
+  for(var i=0;i<bs.length;i++)bs[i].setAttribute("aria-pressed",String(+bs[i].getAttribute("data-k")===q.ans));
+  var bl=document.getElementById("b"+q.n);if(bl)bl.classList.toggle("done",q.ans!==null);
+  var sr=document.getElementById("sr"+q.i);
+  if(sr){var cs=sr.querySelectorAll(".b");for(var k=0;k<cs.length;k++)cs[k].classList.toggle("on",q.ans===k);}
+}
+function pick(el){
+  if(!S||S.done)return;
+  var q=S.qs[+el.getAttribute("data-q")],k=+el.getAttribute("data-k");
+  q.ans=(q.ans===k)?null:k;
+  sync(q);updateProgress();
+}
+function goto(n){
+  var t=document.getElementById("q"+n);if(!t)return;
+  t.scrollIntoView({block:"start"});
+  t.classList.add("flash");setTimeout(function(){t.classList.remove("flash");},1400);
+}
+function tick(){
+  if(!S||S.done)return;
+  var el=Math.floor((Date.now()-S.t0)/1000);
+  var tm=document.getElementById("tm"),ck=document.getElementById("ck");
+  if(S.limit){
+    var left=S.limit-el;
+    if(left<=0){finish(true);return;}
+    if(tm)tm.textContent=fmt(left);
+    if(ck)ck.setAttribute("data-s",left<=60?"crit":(left/S.limit<=0.2?"warn":"ok"));
+    var pz=document.getElementById("pz");
+    if(pz){var gg=S.groups.filter(function(g){return el<g.endAt;})[0];pz.textContent=gg?"Partie "+({5:"V",6:"VI",7:"VII"}[gg.type])+" : "+fmt(gg.endAt-el)+" conseillé":"";}
+  }else if(tm){tm.textContent=fmt(el);}
+}
+function finish(timeout){
+  if(!S||S.done)return;
+  S.done=true;S.timeout=!!timeout;clearInterval(iv);
+  var el=Math.floor((Date.now()-S.t0)/1000);
+  S.elapsed=S.limit?Math.min(el,S.limit):el;
+  renderResults();saveHist();
+}
+
+/* Résultats */
+function rvHTML(q,withText){
+  var right=0;q.opts.forEach(function(o,k){if(o.ok)right=k;});
+  var st=q.ans===null?["none","– Sans réponse"]:q.good?["ok","✓ Correct"]:["bad","✗ Incorrect"];
+  var h='<li class="rv '+(q.good?"ok":"no")+'"><span class="qn">'+q.n+'</span><div><div class="top"><span class="st '+st[0]+'">'+st[1]+'</span><span class="chip">'+esc(q.tag)+'</span></div>';
+  if(withText)h+='<p class="qt">'+gapText(q.text,q.opts[right].t)+'</p>';
+  h+='<ul class="rvo">'+q.opts.map(function(o,k){
+    var cls=o.ok?"is-ok":(q.ans===k?"is-bad":"");
+    var tg=o.ok?(q.ans===k?"✓ Ta réponse":"✓ Bonne réponse"):(q.ans===k?"✗ Ta réponse":"");
+    return '<li class="'+cls+'"><span class="lt">'+L[k]+'</span><span>'+esc(typo(o.t))+'</span>'+(tg?'<span class="tg">'+tg+'</span>':"")+'</li>';
+  }).join("")+'</ul><p class="ex">'+esc(typo(q.e))+'</p></div></li>';
+  return h;
+}
+function renderResults(){
+  var qs=S.qs;
+  qs.forEach(function(q){q.good=q.ans!==null&&q.opts[q.ans].ok;});
+  var n=qs.length,ok=qs.filter(function(q){return q.good;}).length;
+  var blank=qs.filter(function(q){return q.ans===null;}).length;
+  var wrong=n-ok;
+  S.ok=ok;
+  var pct=Math.round(ok/n*100);
+  var parts={5:{ok:0,n:0},6:{ok:0,n:0},7:{ok:0,n:0}},tags={};
+  qs.forEach(function(q){
+    parts[q.part].n++;if(q.good)parts[q.part].ok++;
+    tags[q.tag]=tags[q.tag]||{ok:0,n:0};tags[q.tag].n++;if(q.good)tags[q.tag].ok++;
+  });
+  var tagRows=Object.keys(tags).map(function(k){return {k:k,ok:tags[k].ok,n:tags[k].n,r:tags[k].ok/tags[k].n};})
+    .sort(function(a,b){return a.r-b.r||b.n-a.n;});
+  var h='<header class="bar"><div class="bar-in"><div class="brand"><b>TOEIC Reading</b><span>Correction · '+bookLabel(S.book)+' · '+partLabel(S.part)+'</span></div>'+
+    '<div class="acts"><button type="button" class="btn" data-act="again">Nouvel essai</button></div></div></header><div class="wrap"><div>';
+  h+='<section class="sum"><div><p class="kick">Score</p><p><span class="sc">'+ok+'</span><span class="of">/ '+n+'</span></p>'+
+    '<p class="rsm"><b>'+pct+' %</b> de bonnes réponses · '+(blank?blank+" sans réponse · ":"")+'<b>'+fmt(S.elapsed)+'</b>'+(S.limit?" sur "+fmt(S.limit):"")+' · '+Math.round(S.elapsed/n)+' s par question</p>'+
+    (S.timeout?'<p class="tmo">Temps écoulé : les questions non cochées comptent comme fausses.</p>':"")+'</div>'+
+    '<div><h2>Par partie</h2><div class="pts">'+
+    [5,6,7].filter(function(p){return parts[p].n;}).map(function(p){
+      return '<div><span>Partie '+({5:"V · phrases à compléter",6:"VI · textes à trous",7:"VII · compréhension"}[p])+'</span><b>'+parts[p].ok+"/"+parts[p].n+'</b></div>';
+    }).join("")+'</div><h2>Par type de question, du plus faible au plus fort</h2><div class="tbs">'+
+    tagRows.map(function(t){
+      var lv=t.r>=0.8?"hi":t.r>=0.55?"mid":"lo";
+      return '<div class="tb" data-lv="'+lv+'"><span>'+esc(t.k)+'</span><div class="bt"><i style="width:'+Math.round(t.r*100)+'%"></i></div><span class="v">'+t.ok+"/"+t.n+'</span></div>';
+    }).join("")+'</div></div></section>';
+  h+='<div class="review" id="rv"><div class="rvh"><h2>Correction détaillée</h2><div class="seg"><button type="button" data-act="all" aria-pressed="true">Tout</button><button type="button" data-act="wrong" aria-pressed="false">Erreurs ('+wrong+')</button></div></div>';
+  h+='<div class="booklet" style="margin-top:16px">';
+  S.groups.forEach(function(g){
+    if(g.type===7){
+      h+='<section class="part"><div class="ph"><p class="kick">Part 7</p><h2>Reading Comprehension</h2></div>';
+      g.passages.forEach(function(p){
+        var allok=p.qs.every(function(q){return q.good;});
+        h+='<div class="pv'+(allok?" allok":"")+'">'+docsHTML(p)+'<ol class="rvl">'+p.qs.map(function(q){return rvHTML(q,true);}).join("")+'</ol></div>';
+      });
+      h+='</section>';
+    }else if(g.type===5){
+      h+='<section class="part"><div class="ph"><p class="kick">Part 5</p><h2>Incomplete Sentences</h2></div><ol class="rvl">'+g.qs.map(function(q){return rvHTML(q,true);}).join("")+'</ol></section>';
+    }else{
+      h+='<section class="part"><div class="ph"><p class="kick">Part 6</p><h2>Text Completion</h2></div>';
+      g.passages.forEach(function(p){
+        var allok=p.qs.every(function(q){return q.good;});
+        h+='<div class="pv'+(allok?" allok":"")+'">'+docHTML(p,true)+'<ol class="rvl">'+p.qs.map(function(q){return rvHTML(q,false);}).join("")+'</ol></div>';
+      });
+      h+='</section>';
+    }
+  });
+  h+='</div></div><div class="go"><button type="button" class="btn big" data-act="again">Nouvel essai</button></div></div></div>';
+  app.innerHTML=h;
+  window.scrollTo(0,0);
+}
+
+/* Événements */
+app.addEventListener("change",function(e){
+  var t=e.target;
+  if(t.name==="part")setup.part=t.value;
+  if(t.name==="pace")setup.pace=t.value;
+  if(t.name==="book")setup.book=t.value;
+  refreshTimes();
+});
+app.addEventListener("click",function(e){
+  var el=e.target.closest(".opt,[data-jump],[data-part],[data-act]");
+  if(!el)return;
+  if(el.classList.contains("opt")){pick(el);return;}
+  if(el.hasAttribute("data-jump")){goto(+el.getAttribute("data-jump"));return;}
+  if(el.hasAttribute("data-part")){var pt=document.getElementById("part"+el.getAttribute("data-part"));if(pt)pt.scrollIntoView({block:"start"});return;}
+  var a=el.getAttribute("data-act");
+  if(a==="start")startTest();
+  else if(a==="again")renderStart();
+  else if(a==="tg"){var ck=document.getElementById("ck");var hid=ck.classList.toggle("hid");el.textContent=hid?"Afficher":"Masquer";}
+  else if(a==="next"){
+    var q=S.qs.filter(function(x){return x.ans===null;})[0];
+    if(q)goto(q.n);
+    else{el.textContent="Tout est coché";setTimeout(function(){el.textContent="Sans réponse";},1600);}
+  }
+  else if(a==="fin"){
+    var left=S.qs.filter(function(x){return x.ans===null;}).length;
+    if(!left)finish(false);
+    else{
+      document.getElementById("cfn").textContent=left+(left>1?" questions sont sans réponse.":" question est sans réponse.");
+      document.getElementById("cf").hidden=false;
+    }
+  }
+  else if(a==="finno")document.getElementById("cf").hidden=true;
+  else if(a==="finyes")finish(false);
+  else if(a==="all"||a==="wrong"){
+    var rv=document.getElementById("rv");rv.classList.toggle("only-wrong",a==="wrong");
+    var bs=rv.querySelectorAll(".seg button");
+    for(var i=0;i<bs.length;i++)bs[i].setAttribute("aria-pressed",String(bs[i].getAttribute("data-act")===a));
+  }
+});
+
+renderStart();
+})();
+</script>
+
+</body></html>
