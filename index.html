@@ -510,7 +510,10 @@ var P6d=[
 ];
 
 /* ===== Partie VII ===== */
-var T7={m:"Idée générale",d:"Détail",i:"Inférence",x:"Textes croisés",n:"Question NOT"};
+var T7={m:"Idée générale",d:"Détail",i:"Inférence",x:"Textes croisés",n:"Question NOT",p:"Insertion de phrase"};
+var INS="In which of the positions marked [1], [2], [3], and [4] does the following sentence best belong? ";
+var POS=["[1]","[2]","[3]","[4]"];
+function posFirst(k){var a=POS.slice();var c=a.splice(k-1,1)[0];return [c].concat(a);}
 var P7=[
 {docs:[{kind:"E-mail",title:"",head:["To: Lorenzo Bianchi, Bianchi Furnishings","From: Hana Moreau, Procurement, Cartwright & Dale","Date: 2 November","Subject: Order 7732, delivery date"],
  paras:["Dear Mr. Bianchi,","I understand from your message of 30 October that the 200 ergonomic chairs we ordered will not be ready until 20 November. Unfortunately, our new office on Harbor Street opens on 15 November, and we will need seating for at least 120 employees on that day.","Would it be possible to ship 120 chairs by 10 November and send the remaining 80 as soon as they are finished? We are willing to cover the extra freight cost. If you agree, please also issue two separate invoices, one for each shipment, so that our accounting department can process both in the same month.","Thank you for your help.","Hana Moreau"]}],
@@ -644,8 +647,426 @@ P7.push(
  ]}
 );
 
-var BOOKS={"1":{p5:P5,p6:P6},"2":{p5:P5b,p6:P6b},"3":{p5:P5c,p6:P6c},"4":{p5:P5d,p6:P6d}};
+/* ===== Partie VII, livre 2 ===== */
+var P7b=[
+{docs:[{kind:"Conversation par messages",title:"",head:[],
+ paras:["Kofi Mensah (9:12 A.M.)\nThe projector in Conference Room B won't turn on, and the clients arrive at 10.","Lena Fischer (9:14 A.M.)\nFacilities said they would replace the bulb this week. Try Room D; it's free until noon.","Kofi Mensah (9:15 A.M.)\nGood idea. Can you ask the receptionist to send the clients there?","Lena Fischer (9:16 A.M.)\nConsider it done."]}],
+ qs:[
+  f(T7.i,"At 9:16 A.M., what does Ms. Fischer mean when she writes, \"Consider it done\"?",["She will inform the receptionist.","She has repaired the projector.","The meeting is over.","She has booked Room B."],"M. Mensah lui demande de prévenir la réceptionniste ; « Consider it done » signifie « c'est comme si c'était fait », elle s'en charge."),
+  f(T7.d,"Why does Mr. Mensah need a different room?",["A piece of equipment is not working.","Room B is too small.","The clients asked for it.","Room B is already booked."],"Le projecteur de la salle B ne s'allume pas.")
+ ]},
+{docs:[{kind:"Avis",title:"Elmwood Street Garage: Temporary Closure",head:[],
+ paras:["The Elmwood Street parking garage will be closed for resurfacing from 3 to 7 March. During this period, permit holders may park free of charge at the Grant Avenue lot, two blocks east. Vehicles left in the garage after 6:00 P.M. on 2 March will be towed at the owner's expense."]}],
+ qs:[
+  f(T7.d,"What will happen on 3 March?",["Work on the garage will begin.","Parking permits will expire.","A new lot will open.","Parking fees will increase."],"Le garage ferme pour travaux de réfection du 3 au 7 mars."),
+  f(T7.d,"What are permit holders allowed to do during the closure?",["Park at another lot at no cost","Leave their cars in the garage","Request a refund","Park on Elmwood Street"],"« Permit holders may park free of charge at the Grant Avenue lot »."),
+ ]},
+{docs:[{kind:"Publicité",title:"Brightway Language School: Business English in 8 Weeks",head:[],
+ paras:["Improve your presentations, e-mails and negotiation skills in small groups of no more than eight students. Classes meet on Tuesday and Thursday evenings at our city-center campus.","Not sure of your level? Take our free placement test online. Companies that enroll three or more employees receive a 10 percent discount on tuition."]}],
+ qs:[
+  f(T7.d,"What is offered free of charge?",["A placement test","The first class","The course materials","A certificate"],"« Take our free placement test online »."),
+  f(T7.i,"Who would most likely receive a discount?",["A company that enrolls several employees","A student who pays early","A former student","Anyone who enrolls online"],"La réduction de 10 % s'applique aux entreprises qui inscrivent au moins trois salariés."),
+ ]},
+{docs:[{kind:"E-mail",title:"",head:["To: Celia Ward","From: Accounts, Pinewood Printing","Date: 2 May","Subject: Invoice no. 5520"],
+ paras:["Dear Ms. Ward,","Our records show that invoice no. 5520 for 500 brochures, due on 30 April, has not yet been paid. If you have already sent payment, please disregard this message. Otherwise, you can pay online through your customer account. Please note that a late fee of 2 percent will be added after 15 May.","Pinewood Printing, Accounts Department"]}],
+ qs:[
+  f(T7.m,"Why was the e-mail sent?",["To remind a customer about a payment","To confirm a new order","To offer a discount","To announce a price increase"],"L'e-mail signale qu'une facture échue au 30 avril n'est pas réglée : c'est une relance de paiement."),
+  f(T7.d,"What will happen after 15 May?",["An extra charge will be added.","The order will be cancelled.","The brochures will be reprinted.","The account will be closed."],"« A late fee of 2 percent will be added after 15 May » : une pénalité de retard."),
+ ]},
+{docs:[{kind:"Article de presse",title:"Software Firm Moves into Former Textile Mill",head:[],
+ paras:["Corvid Software, founded in 2019 by Anika Rao, has moved its 60 employees into the renovated Harker textile mill in Millbrook. The company plans to hire 40 more staff, mostly engineers, by the end of next year.","The renovation kept the mill's original brick walls and wooden beams, while adding solar panels to the roof. The city offered Corvid a five-year tax reduction to encourage it to stay in Millbrook."]}],
+ qs:[
+  f(T7.m,"What is the article mainly about?",["A company moving into a new building","The history of the textile industry","A change in national tax law","The opening of a university"],"L'article décrit l'installation de Corvid Software dans l'ancienne filature rénovée."),
+  f(T7.i,"About how many people will Corvid Software most likely employ at the end of next year?",["100","60","40","140"],"60 salariés actuellement + 40 embauches prévues = environ 100."),
+  f(T7.d,"What is mentioned about the renovation?",["Some original features were kept.","It was paid for by Ms. Rao.","It took five years to complete.","It was carried out by Corvid's engineers."],"« The renovation kept the mill's original brick walls and wooden beams »."),
+ ]},
+{docs:[{kind:"Mémo",title:"",head:["To: All staff","From: IT Department","Re: New password policy"],
+ paras:["Starting 1 May, all employees will be required to change their computer passwords every 90 days. [1] New passwords must contain at least 12 characters, including at least one number. [2] You will receive an automatic e-mail reminder seven days before your password expires. [3] If you forget your password, you can reset it through the self-service portal or by calling the IT help desk at extension 400. [4]"]}],
+ qs:[
+  f(T7.d,"What will employees receive before their password expires?",["An e-mail reminder","A new computer","A call from the help desk","A security badge"],"« You will receive an automatic e-mail reminder seven days before your password expires »."),
+  f(T7.d,"How can employees reset a forgotten password?",["By using an online portal","By visiting the IT office","By e-mailing their manager","By waiting 90 days"],"« You can reset it through the self-service portal or by calling the IT help desk »."),
+  f(T7.p,INS+"\"This change is intended to protect company data from growing security threats.\"",posFirst(1),"« This change » renvoie à la nouvelle règle annoncée dans la première phrase : la phrase se place juste après, en [1]."),
+ ]},
+{docs:[{kind:"Page web",title:"Riverside Public Library: Frequently Asked Questions",head:[],
+ paras:["How many items can I borrow? Up to 15 books and 5 DVDs at a time.","How long can I keep them? Books may be kept for three weeks and DVDs for one week. Items can be renewed online twice, unless another user has reserved them.","Are there late fees? There are no late fees for children's books. For all other items, the fee is $0.25 per item per day.","Can I use a meeting room? Meeting rooms are free for nonprofit groups and must be booked at least two weeks in advance."]}],
+ qs:[
+  f(T7.d,"How long can DVDs be borrowed?",["One week","Two weeks","Three weeks","Fifteen days"],"« DVDs for one week »."),
+  f(T7.d,"When can an item NOT be renewed?",["When another user has reserved it","When it is a DVD","When it was borrowed online","When it is a children's book"],"Le renouvellement est possible deux fois « unless another user has reserved them »."),
+  f(T7.n,"What is NOT mentioned on the web page?",["The library's opening hours","Late fees","Meeting rooms","Borrowing limits"],"Les horaires d'ouverture ne sont jamais donnés. Pénalités, salles de réunion et nombre d'emprunts le sont."),
+ ]},
+{docs:[{kind:"E-mail",title:"",head:["To: Martin Osei, Velo Pharma","From: Events Team, Aldridge Hotel","Date: 20 April","Subject: Booking confirmation, 22 May"],
+ paras:["Dear Mr. Osei,","We are pleased to confirm your booking of Ballroom A on 22 May for 80 attendees, with theater-style seating and our standard audiovisual package. Coffee breaks will be served at 10:30 A.M. and 3:00 P.M.","We have received your deposit of 30 percent. The remaining balance is due seven days before the event. Changes to the number of attendees can be made until 15 May. Attendees who show their event badge can park in the hotel garage for $8 per day instead of the usual $20.","Kind regards,\nAldridge Hotel Events Team"]}],
+ qs:[
+  f(T7.m,"What is the purpose of the e-mail?",["To confirm the details of an event booking","To request a deposit","To cancel a reservation","To advertise a new ballroom"],"L'hôtel confirme la réservation de la salle, la date, le nombre de participants et les services."),
+  f(T7.d,"What has Velo Pharma already paid?",["Part of the total cost","The full amount","The parking fees","Nothing yet"],"« We have received your deposit of 30 percent » : un acompte, donc une partie du coût."),
+  f(T7.i,"By what date must the remaining balance be paid?",["15 May","7 May","22 May","30 April"],"Le solde est dû sept jours avant l'événement du 22 mai, soit le 15 mai."),
+  f(T7.d,"How can attendees get a parking discount?",["By showing their event badge","By booking online","By arriving before 8:00 A.M.","By staying at the hotel"],"« Attendees who show their event badge can park … for $8 per day »."),
+ ]},
+{docs:[{kind:"Communiqué de presse",title:"Harlow Telecom Responds to Customer Survey",head:[],
+ paras:["Harlow Telecom has published the results of a survey of 2,000 customers. While 72 percent said they were satisfied with network coverage, only 48 percent were satisfied with the time it takes to reach customer service. The average wait time was 14 minutes.","In response, the company will hire 150 additional call-center staff and launch an online chat service in the autumn. \"Our goal is to reduce average wait times to five minutes by next year,\" said Chief Executive Marcus Bell."]}],
+ qs:[
+  f(T7.m,"What is the main purpose of the press release?",["To report survey results and the company's response","To announce a merger","To advertise new phone models","To announce job cuts"],"Le communiqué présente les résultats de l'enquête puis les mesures prises par l'entreprise."),
+  f(T7.d,"What were customers least satisfied with?",["Waiting times for customer service","Network coverage","Prices","Phone models"],"Seulement 48 % sont satisfaits du temps d'attente, contre 72 % pour la couverture réseau."),
+  f(T7.d,"What will the company launch in the autumn?",["An online chat service","A new phone","A loyalty program","A call center abroad"],"« Launch an online chat service in the autumn »."),
+  f(T7.d,"What is Mr. Bell's goal?",["To reduce wait times to five minutes","To hire 2,000 employees","To increase satisfaction to 72 percent","To open new stores"],"« Our goal is to reduce average wait times to five minutes »."),
+ ]},
+{docs:[{kind:"Discussion en ligne",title:"",head:[],
+ paras:["Sara Lindholm (10:02 A.M.)\nOur booth for the Berlin trade show is confirmed: space C14, near the main entrance.","Tomás Ruiz (10:04 A.M.)\nGreat spot. Have the brochures arrived?","Sara Lindholm (10:05 A.M.)\nNot yet. The printer says Thursday.","Akira Sato (10:06 A.M.)\nThat's cutting it close. We fly out Friday morning.","Tomás Ruiz (10:08 A.M.)\nI can pick them up Thursday afternoon and bring them to the airport.","Akira Sato (10:09 A.M.)\nPerfect. I'll take care of the demo laptops.","Sara Lindholm (10:11 A.M.)\nAnd I'll send everyone the booth setup schedule tonight."]}],
+ qs:[
+  f(T7.d,"Where is the booth located?",["Near the main entrance","Next to the café","Outside the exhibition hall","On the second floor"],"« Space C14, near the main entrance »."),
+  f(T7.i,"At 10:06 A.M., what does Mr. Sato mean when he writes, \"That's cutting it close\"?",["The brochures may arrive just in time.","The booth is too small.","The flights are expensive.","The printer is closed."],"Les brochures arrivent jeudi et le départ est vendredi matin : il reste très peu de marge."),
+  f(T7.d,"What does Mr. Ruiz offer to do?",["Collect the brochures","Book the flights","Set up the laptops","Call the printer"],"« I can pick them up Thursday afternoon »."),
+  f(T7.d,"What will Ms. Lindholm send this evening?",["A schedule","The brochures","Flight tickets","A price list"],"« I'll send everyone the booth setup schedule tonight »."),
+ ]},
+{docs:[
+  {kind:"Petite annonce",title:"Apartment for Rent: 14 Linden Court",head:[],
+   paras:["Fully furnished two-bedroom apartment with balcony, a 10-minute walk from Hillside Station. $1,450 per month, utilities included. Minimum lease: one year. No pets.","Viewings on Saturdays from 10:00 A.M. to 2:00 P.M. Contact Jonah Fry, Ashby Property."]},
+  {kind:"E-mail",title:"",head:["To: Jonah Fry, Ashby Property","From: Mei Lin","Subject: 14 Linden Court"],
+   paras:["Dear Mr. Fry,","I am interested in the apartment at 14 Linden Court. I am moving to the city for a six-month work assignment starting in September. Could you also tell me whether the building has parking, as I will be bringing my car?","I work on weekdays, so a Saturday viewing would suit me. Would 11:00 A.M. be possible?","Best regards,\nMei Lin"]}],
+ qs:[
+  f(T7.d,"What is included in the rent?",["Utilities","A parking space","A cleaning service","Pet care"],"« $1,450 per month, utilities included »."),
+  f(T7.d,"What does Ms. Lin ask about?",["Parking","Pets","The balcony","The train station"],"« Could you also tell me whether the building has parking »."),
+  f(T7.x,"What problem might Ms. Lin have with the apartment?",["Her stay is shorter than the minimum lease.","She owns a pet.","She needs three bedrooms.","She cannot visit on weekends."],"Le bail minimum est d'un an (annonce), mais sa mission ne dure que six mois (e-mail)."),
+  f(T7.x,"What is true about the viewing time Ms. Lin requests?",["It falls within the viewing hours.","It is too early in the day.","It is on a weekday.","It conflicts with her work."],"Les visites ont lieu le samedi de 10 h à 14 h (annonce) ; elle demande samedi 11 h (e-mail)."),
+  f(T7.i,"What is suggested about Ms. Lin?",["She is relocating for her job.","She already lives near Hillside Station.","She works for Ashby Property.","She plans to sell her car."],"« I am moving to the city for a six-month work assignment »."),
+ ]},
+{docs:[
+  {kind:"Facture",title:"Crestline Office Furniture: Invoice 88-104",head:["Date: 3 March","Customer: Daria Kowalski, Brookfield Accounting"],
+   paras:["6 standing desks at $420: $2,520\n6 desk lamps at $35: $210\nDelivery: $60\nDesk assembly: $90\nTotal: $2,880\nPayment due: 2 April"]},
+  {kind:"E-mail",title:"",head:["To: Customer Service, Crestline Office Furniture","From: Daria Kowalski","Date: 6 March","Subject: Invoice 88-104"],
+   paras:["Hello,","The desks and lamps were delivered yesterday, but the delivery team left without assembling the desks because they did not have the right tools. Our own staff assembled them, so I would like this service to be removed from the invoice.","In addition, one of the lamps arrived with a broken switch. Please send a replacement.","Daria Kowalski"]}],
+ qs:[
+  f(T7.d,"When is the payment due?",["On 2 April","On 3 March","On 6 March","On 5 March"],"La facture indique « Payment due: 2 April »."),
+  f(T7.m,"Why did Ms. Kowalski write the e-mail?",["To request changes to an invoice","To order more desks","To cancel her order","To thank the delivery team"],"Elle demande qu'on retire le montage de la facture et qu'on remplace une lampe."),
+  f(T7.x,"By how much does Ms. Kowalski want the invoice reduced?",["$90","$60","$150","$35"],"Elle demande de retirer le montage (e-mail), facturé 90 $ (facture)."),
+  f(T7.x,"What is indicated about the item that needs to be replaced?",["It cost $35.","It cost $420.","It was assembled by her staff.","It was delivered on 3 March."],"La lampe au interrupteur cassé (e-mail) est facturée 35 $ l'unité (facture)."),
+  f(T7.i,"When were the items most likely delivered?",["On 5 March","On 3 March","On 6 March","On 2 April"],"L'e-mail du 6 mars dit « delivered yesterday », soit le 5 mars."),
+ ]},
+{docs:[
+  {kind:"Programme",title:"Northern Retail Summit, Glasgow, 14 and 15 October",head:[],
+   paras:["Day 1: 9:00 A.M. Keynote, \"The Future of Shopping,\" Dana Whitfield · 11:00 A.M. Workshops: A. Social Media Advertising (Room 1); B. Store Layout Design (Room 2) · 2:00 P.M. Panel on supply chains\nDay 2: 9:00 A.M. Keynote, \"Data-Driven Pricing,\" Raj Malhotra · 11:00 A.M. Workshops: C. Customer Loyalty Programs (Room 1); D. Hiring and Training Staff (Room 2)","Registration: £180 for both days, £110 for one day. Register before 1 September for a 15 percent discount."]},
+  {kind:"E-mail",title:"",head:["To: Registration, Northern Retail Summit","From: Ellen Moss, Fern & Co.","Date: 20 September"],
+   paras:["Hello,","I would like to register for the second day only. I am especially interested in the session on hiring and training staff, since we are opening two new stores next year. Please send the invoice to our head office.","Ellen Moss, Store Manager"]},
+  {kind:"Formulaire d'évaluation",title:"",head:["Participant: Ellen Moss"],
+   paras:["Session attended: Workshop D · Rating: 5/5","Comments: Very practical. The speaker, Nora Grant, shared useful interview templates. However, the room was too small and several people had to stand. I would suggest a larger room next year."]}],
+ qs:[
+  f(T7.d,"Who gave the opening talk on the first day?",["Dana Whitfield","Raj Malhotra","Nora Grant","Ellen Moss"],"Le programme indique la conférence d'ouverture du jour 1 par Dana Whitfield."),
+  f(T7.x,"How much did Ms. Moss most likely pay to register?",["£110","£93.50","£180","£153"],"Elle s'inscrit pour un seul jour (110 £) le 20 septembre, après la date limite de la réduction (1er septembre)."),
+  f(T7.i,"Why is Ms. Moss interested in Workshop D?",["Her company will need new employees.","She is a professional trainer.","She is speaking in Room 2.","Her store is closing."],"Fern & Co. ouvre deux nouveaux magasins : il faudra recruter et former du personnel."),
+  f(T7.x,"At what time did the session Ms. Moss attended begin?",["11:00 A.M.","9:00 A.M.","2:00 P.M.","4:00 P.M."],"Elle a suivi l'atelier D (formulaire), qui a lieu à 11 h le jour 2 (programme)."),
+  f(T7.x,"Which room does Ms. Moss say was too small?",["Room 2","Room 1","The main hall","The panel room"],"L'atelier D se tient en Room 2 (programme), et elle juge la salle trop petite (formulaire)."),
+ ]},
+{docs:[
+  {kind:"Page produit",title:"Aurora X2 Wireless Headphones, $129",head:[],
+   paras:["Battery life: up to 30 hours. Active noise cancelling. Available in black, silver and navy. Two-year warranty. Free returns within 30 days of purchase."]},
+  {kind:"Avis client",title:"3 stars out of 5",head:["Posted by Tom Achebe on 12 June"],
+   paras:["The sound quality is excellent, and the noise cancelling works very well on trains. However, the battery lasts about 20 hours, not the advertised amount. I also ordered the navy model but received a silver pair. I kept them because I needed headphones for a trip the next day."]},
+  {kind:"Réponse du service client",title:"",head:["Posted by Aurora Customer Care on 13 June"],
+   paras:["Dear Mr. Achebe, we are sorry about the color mix-up. Since you bought your headphones ten days ago, you can still return them at no cost, and we will send you the navy pair. Regarding the battery, the advertised figure applies with noise cancelling turned off. With it on, about 20 hours is normal."]}],
+ qs:[
+  f(T7.d,"What feature does Mr. Achebe praise?",["The noise cancelling","The battery life","The price","The color"],"« The noise cancelling works very well on trains »."),
+  f(T7.x,"How much shorter than advertised was the battery life Mr. Achebe experienced?",["About 10 hours","About 20 hours","About 30 hours","It was the same."],"30 heures annoncées (page produit) contre environ 20 heures constatées (avis) : 10 heures de moins."),
+  f(T7.x,"Why can Mr. Achebe still return the headphones for free?",["He is within the free-return period.","The warranty covers color errors.","He paid extra for returns.","He wrote a review."],"Retours gratuits sous 30 jours (page produit) ; l'achat date de dix jours (réponse)."),
+  f(T7.i,"What does Aurora Customer Care suggest about the battery?",["It lasts longer when noise cancelling is off.","It is defective.","It will be replaced free of charge.","It needs to be charged every ten days."],"Les 30 heures s'entendent sans réduction de bruit ; avec, 20 heures est normal."),
+  f(T7.d,"Which color will Mr. Achebe receive if he returns his pair?",["Navy","Silver","Black","Any color he chooses"],"« We will send you the navy pair »."),
+ ]},
+{docs:[
+  {kind:"Annonce interne",title:"First Aid Certification Course",head:["Lakeside Distribution"],
+   paras:["Lakeside Distribution is offering a free one-day first aid course to warehouse staff. Sessions: Tuesday 4 March (Building A), Thursday 13 March (Building C), Saturday 22 March (Building A). Each session is limited to 12 participants.","Employees who attend the Saturday session will receive overtime pay. Please register with your shift supervisor by 28 February."]},
+  {kind:"E-mail",title:"",head:["To: Leon Park, Human Resources","From: Grace Obi, Shift Supervisor","Date: 27 February"],
+   paras:["Hi Leon,","Five members of my team would like to take the course. Four of them work the morning shift and would prefer the Thursday session. The fifth, Ahmed Karimi, cannot leave his post on weekdays, so he would like the weekend session.","Thanks,\nGrace"]},
+  {kind:"E-mail",title:"",head:["To: Grace Obi","From: Leon Park, Human Resources","Date: 3 March"],
+   paras:["Hi Grace,","Thank you for the names. Unfortunately, the Thursday session is now full, so I have placed your four morning-shift employees in the first session instead. Mr. Karimi is confirmed for his preferred date. Please remind everyone to bring their employee ID.","Leon"]}],
+ qs:[
+  f(T7.d,"What is true about the course?",["It is free for staff.","It lasts two days.","It is for office staff only.","It is held online."],"« A free one-day first aid course to warehouse staff »."),
+  f(T7.x,"Where will the four morning-shift employees take the course?",["In Building A","In Building C","At another company","Online"],"Ils sont placés dans la première session (e-mail de M. Park), le 4 mars en Building A (annonce)."),
+  f(T7.x,"What will Mr. Karimi most likely receive for attending the course?",["Overtime pay","An extra day off","A cash bonus","Travel expenses"],"Il suit la session du week-end (e-mails), et la session du samedi donne droit aux heures supplémentaires (annonce)."),
+  f(T7.d,"By when did employees have to register?",["28 February","27 February","3 March","4 March"],"« Please register with your shift supervisor by 28 February »."),
+  f(T7.d,"What are participants asked to bring?",["Their employee ID","A first aid kit","A registration form","Safety shoes"],"« Please remind everyone to bring their employee ID »."),
+ ]}
+];
+
+/* ===== Partie VII, livre 3 ===== */
+var P7c=[
+{docs:[{kind:"Conversation par messages",title:"",head:[],
+ paras:["Hugo Lambert (3:20 P.M.)\nAre you still at the Westgate store?","Amina Bello (3:22 P.M.)\nJust leaving. Why?","Hugo Lambert (3:23 P.M.)\nThe manager there promised us the June sales figures. Did you get them?","Amina Bello (3:25 P.M.)\nOh no, I forgot to ask. I'll go back in.","Hugo Lambert (3:26 P.M.)\nThanks. I need them for tomorrow's report."]}],
+ qs:[
+  f(T7.i,"At 3:25 P.M., what does Ms. Bello mean when she writes, \"Oh no, I forgot to ask\"?",["She did not request the sales figures.","She lost the report.","She missed a meeting.","She forgot the store's address."],"M. Lambert demande si elle a obtenu les chiffres de juin ; elle avoue ne pas les avoir demandés."),
+  f(T7.d,"Why does Mr. Lambert need the figures?",["To prepare a report","To pay the store manager","To close the store","To order new products"],"« I need them for tomorrow's report »."),
+ ]},
+{docs:[{kind:"Avis",title:"Dear Guests",head:["Harbor View Hotel"],
+ paras:["To save water and energy, towels will be replaced only if they are left on the bathroom floor. Towels hung on the rack will be reused. Bed linens are changed every third day unless you request more frequent changes by calling housekeeping at extension 22."]}],
+ qs:[
+  f(T7.m,"What is the purpose of the notice?",["To explain an environmental policy","To advertise the hotel spa","To announce renovations","To introduce new staff"],"L'avis explique la politique de réutilisation des serviettes et des draps pour économiser l'eau et l'énergie."),
+  f(T7.d,"How can guests have their sheets changed more often?",["By calling housekeeping","By leaving them on the floor","By hanging them on the rack","By going to the front desk"],"« Unless you request more frequent changes by calling housekeeping »."),
+ ]},
+{docs:[{kind:"Coupon",title:"Bella Cucina: Lunch Special",head:[],
+ paras:["Two courses for $18, Monday to Friday, 11:30 A.M. to 2:30 P.M. Present this coupon to receive a free coffee with your meal. Not valid on public holidays. Expires 31 July."]}],
+ qs:[
+  f(T7.d,"What does the coupon provide?",["A free drink","A discount on dinner","A free dessert","A free second course"],"Le coupon donne droit à un café offert."),
+  f(T7.d,"When is the coupon not valid?",["On public holidays","On Mondays","At noon","In July"],"« Not valid on public holidays »."),
+ ]},
+{docs:[{kind:"E-mail",title:"",head:["To: Department heads","From: Office of the Chief Financial Officer","Subject: Change of room for Thursday's review"],
+ paras:["Please note that Thursday's quarterly review with the auditors will now take place in the Maple Room on the sixth floor, as the Board Room is being repainted. The meeting will still begin at 9:30 A.M. Please bring printed copies of your department's budget."]}],
+ qs:[
+  f(T7.d,"Why has the location of the meeting changed?",["The original room is being painted.","More people will attend.","The auditors requested it.","The sixth floor is quieter."],"« As the Board Room is being repainted »."),
+  f(T7.d,"What are recipients asked to bring?",["Printed copies of a budget","Their laptops","The auditors' report","A new schedule"],"« Please bring printed copies of your department's budget »."),
+ ]},
+{docs:[{kind:"Article de presse",title:"Hollow Creek Farm Opens Café",head:[],
+ paras:["Hollow Creek Farm has opened a café that serves dishes made with its own produce. Owner Beth Carver said about 80 percent of the ingredients are grown on the farm, and the rest come from neighboring producers.","The café is open Wednesday to Sunday, and reservations are recommended on weekends. Ms. Carver plans to offer cooking classes in the autumn."]}],
+ qs:[
+  f(T7.m,"What is the article mainly about?",["The opening of a café","A cooking competition","A new supermarket","A change in farming laws"],"L'article annonce l'ouverture du café de la ferme Hollow Creek."),
+  f(T7.d,"Where do most of the café's ingredients come from?",["The farm itself","Local markets","Overseas suppliers","Neighboring farms"],"Environ 80 % des ingrédients sont cultivés sur place ; seul le reste vient des producteurs voisins."),
+  f(T7.d,"What is planned for the autumn?",["Cooking classes","A second café","Weekend closures","A farmers' market"],"« Ms. Carver plans to offer cooking classes in the autumn »."),
+ ]},
+{docs:[{kind:"Mémo",title:"",head:["To: Customer service team","From: Rachel Dunn, Operations Manager","Re: New response target"],
+ paras:["Beginning next Monday, our target will be to answer every call within 60 seconds. [1] To help us reach this goal, two additional agents will join the evening shift. [2] Supervisors will review response times every Friday and share the results at the Monday team meeting. [3] Thank you for your continued hard work. [4]"]}],
+ qs:[
+  f(T7.d,"What is the new target?",["Answering calls within one minute","Hiring two supervisors","Ending the evening shift","Holding meetings on Fridays"],"« Answer every call within 60 seconds »."),
+  f(T7.d,"How often will response times be reviewed?",["Every week","Every day","Every month","Every quarter"],"« Supervisors will review response times every Friday » : chaque semaine."),
+  f(T7.p,INS+"\"This is the period during which most of our delays currently occur.\"",posFirst(2),"« This is the period » reprend « the evening shift » : la phrase explique pourquoi on renforce le soir, donc en [2]."),
+ ]},
+{docs:[{kind:"Horaires",title:"Coastal Ferries: Winter Timetable (1 November to 31 March)",head:[],
+ paras:["Port Ellis to Marrow Island: 7:00, 11:00, 16:00\nMarrow Island to Port Ellis: 8:30, 13:00, 17:30\nCrossing time: 50 minutes.","Vehicles must check in 30 minutes before departure; foot passengers, 10 minutes. On Sundays, only the 11:00 and 13:00 sailings operate."]}],
+ qs:[
+  f(T7.d,"How long does the crossing take?",["50 minutes","30 minutes","90 minutes","10 minutes"],"« Crossing time: 50 minutes »."),
+  f(T7.i,"A driver wants to take the 11:00 ferry from Port Ellis with his car. By what time must he check in?",["10:30","10:50","11:00","10:00"],"Les véhicules doivent se présenter 30 minutes avant le départ : 10 h 30."),
+  f(T7.n,"What is NOT mentioned in the timetable?",["Ticket prices","Check-in times","Sunday service","Crossing time"],"Les tarifs ne sont pas indiqués. Les autres informations figurent dans les horaires."),
+ ]},
+{docs:[{kind:"Lettre",title:"",head:["Northgate Bank","15 May","Mr. Paulo Ferreira"],
+ paras:["Dear Mr. Ferreira,","As a valued customer for more than ten years, you are eligible to upgrade to our Gold Account at no cost for the first year. Benefits include free international transfers, travel insurance and access to airport lounges in 40 countries.","After the first year, the monthly fee is $12, which is waived if your balance remains above $5,000. To accept this offer, simply sign the enclosed form and return it in the prepaid envelope before 30 June.","Sincerely,\nCustomer Relations, Northgate Bank"]}],
+ qs:[
+  f(T7.m,"Why was the letter sent?",["To offer an account upgrade","To report a problem with an account","To request a payment","To announce a branch closure"],"La banque propose de passer gratuitement au compte Gold."),
+  f(T7.d,"Why is Mr. Ferreira eligible for the offer?",["He has been a customer for a long time.","He travels frequently.","He has a high balance.","He opened an account recently."],"« As a valued customer for more than ten years »."),
+  f(T7.n,"What is NOT listed as a benefit of the Gold Account?",["A higher interest rate","Free international transfers","Travel insurance","Airport lounge access"],"Le taux d'intérêt n'est pas mentionné ; les trois autres avantages le sont."),
+  f(T7.i,"Under what condition would Mr. Ferreira pay no fee in the second year?",["If his balance stays above $5,000","If he returns the form early","If he travels to 40 countries","If he closes another account"],"Les frais de 12 $ par mois sont supprimés si le solde reste au-dessus de 5 000 $."),
+ ]},
+{docs:[{kind:"Article de presse",title:"Central Library to Stay Open Later",head:[],
+ paras:["After a survey of 3,500 residents found that 65 percent wanted evening hours, the city's central library will remain open until 9:00 P.M. on weekdays from 1 September, instead of closing at 6:00 P.M.","The change will be funded by a regional grant of $200,000 over two years. Branch libraries will keep their current hours. Library director Hannah Moyo said the new schedule would be reviewed after one year."]}],
+ qs:[
+  f(T7.m,"What is the article mainly about?",["Longer opening hours at a library","A new branch library","Library budget cuts","A book donation"],"La bibliothèque centrale fermera à 21 h au lieu de 18 h en semaine."),
+  f(T7.d,"What led to the change?",["A survey of residents","A request from the mayor","Low visitor numbers","A new law"],"Une enquête montre que 65 % des habitants veulent des horaires en soirée."),
+  f(T7.d,"How will the change be funded?",["By a grant","By higher fees","By donations from residents","By closing branch libraries"],"« Funded by a regional grant of $200,000 »."),
+  f(T7.d,"What is true about the branch libraries?",["Their hours will not change.","They will close at 9:00 P.M.","They will be renovated.","They will close in September."],"« Branch libraries will keep their current hours »."),
+ ]},
+{docs:[{kind:"Discussion en ligne",title:"",head:[],
+ paras:["Pauline Ng (1:05 P.M.)\nOur Oakridge store is out of the Model 7 blender again, and customers keep asking for it.","Victor Hale (1:07 P.M.)\nThe warehouse has 40 units. I can send 15 today.","Pauline Ng (1:08 P.M.)\nThat would help, but our weekend promotion starts on Saturday.","Rita Osborne (1:10 P.M.)\nVictor, could you send 25 instead? The other stores still have plenty.","Victor Hale (1:12 P.M.)\nSure thing. They'll arrive tomorrow morning.","Pauline Ng (1:13 P.M.)\nThank you both!"]}],
+ qs:[
+  f(T7.m,"What problem is being discussed?",["A store has run out of a product.","A delivery was damaged.","A promotion was cancelled.","A warehouse is closing."],"Le magasin d'Oakridge n'a plus de mixeurs Model 7."),
+  f(T7.i,"Why does Ms. Ng mention the weekend promotion?",["She expects demand to increase.","She wants it postponed.","She will be away.","She needs more staff."],"Avec la promotion, elle prévoit davantage de ventes : 15 unités risquent de ne pas suffire."),
+  f(T7.i,"At 1:12 P.M., what does Mr. Hale mean when he writes, \"Sure thing\"?",["He agrees to send more units.","He is sure about the price.","He has found the blenders.","He will call the store."],"Mme Osborne lui demande d'envoyer 25 unités ; « Sure thing » = bien sûr, il accepte."),
+  f(T7.d,"How many units will be sent to the Oakridge store?",["25","15","40","7"],"M. Hale accepte d'en envoyer 25 au lieu de 15."),
+ ]},
+{docs:[
+  {kind:"Avis",title:"We Are Moving!",head:["Wexford & Lane Architects"],
+   paras:["From 1 December, our new address will be 200 Quay Street, 5th floor. Our telephone numbers will remain the same.","The office will be closed on 28 and 29 November during the move. Clients with appointments on those dates will be contacted to reschedule."]},
+  {kind:"E-mail",title:"",head:["To: Wexford & Lane Architects","From: Hiro Tanaka","Date: 20 November"],
+   paras:["Hello,","I have an appointment with Ms. Lane on 29 November to review the plans for our restaurant. My business partner and I are flying to Osaka on 1 December for two weeks. Could we meet on 27 November instead?","Also, is there parking near your new office?","Hiro Tanaka"]}],
+ qs:[
+  f(T7.m,"What is the purpose of the notice?",["To announce a change of address","To introduce new staff","To advertise new services","To announce new phone numbers"],"Le cabinet annonce son déménagement et sa nouvelle adresse."),
+  f(T7.d,"According to the notice, what will stay the same?",["The telephone numbers","The address","The opening hours","The floor"],"« Our telephone numbers will remain the same »."),
+  f(T7.x,"Why must Mr. Tanaka's appointment be changed?",["The office will be closed that day.","Ms. Lane is ill.","The plans are not ready.","He will already be in Osaka."],"Son rendez-vous est le 29 novembre (e-mail), jour de fermeture pour le déménagement (avis)."),
+  f(T7.i,"Why does Mr. Tanaka propose 27 November?",["He will be abroad from 1 December.","He wants to see the old office.","Ms. Lane suggested that date.","His restaurant opens that day."],"Il part au Japon le 1er décembre pour deux semaines ; il veut voir l'architecte avant."),
+  f(T7.d,"What does Mr. Tanaka ask about?",["Parking","The new phone number","The cost of the plans","The restaurant's location"],"« Is there parking near your new office? »."),
+ ]},
+{docs:[
+  {kind:"Mémo",title:"Commuting Survey Results",head:["To: All staff","From: Facilities"],
+   paras:["Thank you to the 240 employees who answered our commuting survey. Main means of transport: car 45 percent, bus 25 percent, train 20 percent, bicycle 10 percent. Sixty percent of car users said they would take a company shuttle from Westfield Station if one were available.","As a result, a free shuttle will run from Westfield Station starting 3 February, every 20 minutes from 7:00 to 9:30 A.M. and from 4:30 to 7:00 P.M."]},
+  {kind:"E-mail",title:"",head:["To: Facilities","From: Carla Mendes","Date: 10 February"],
+   paras:["Hello,","I have started taking the new shuttle, and it has cut my commute by 25 minutes. However, on Thursdays I often work until 7:30 P.M. because of calls with our New York office. Would it be possible to add a later departure on Thursdays? At least six colleagues on my team are in the same situation.","Carla Mendes"]}],
+ qs:[
+  f(T7.d,"How did most survey respondents travel to work?",["By car","By bus","By train","By bicycle"],"La voiture arrive en tête avec 45 %."),
+  f(T7.d,"When did the shuttle service begin?",["On 3 February","On 10 February","On 20 February","On 7 February"],"« Starting 3 February »."),
+  f(T7.x,"Why can Ms. Mendes not take the shuttle home on some Thursdays?",["She finishes work after the last departure.","The shuttle does not run on Thursdays.","She drives to work on Thursdays.","She works from home on Thursdays."],"Elle termine vers 19 h 30 (e-mail), alors que la dernière navette part à 19 h (mémo)."),
+  f(T7.i,"What is suggested about Ms. Mendes?",["She used to spend more time commuting.","She lives close to the office.","She works in New York.","She is a facilities manager."],"La navette a réduit son trajet de 25 minutes : avant, il était plus long."),
+  f(T7.d,"What does Ms. Mendes request?",["An additional departure time","A parking space","A company bicycle","A change in meeting times"],"« Would it be possible to add a later departure on Thursdays? »."),
+ ]},
+{docs:[
+  {kind:"Publicité",title:"Spice Route Cooking School: Spring Classes",head:[],
+   paras:["Thai Basics: Mondays, 5 weeks, $150\nItalian Pasta: Wednesdays, 4 weeks, $120\nBaking Bread: Saturdays, 3 weeks, $90","Weekday classes run from 6:30 to 8:30 P.M.; Saturday classes from 10:00 A.M. to noon. All ingredients are included. Sign up for two courses and save $20."]},
+  {kind:"E-mail",title:"",head:["To: Olivia Grant","From: Spice Route Cooking School","Subject: Registration confirmed"],
+   paras:["Dear Ms. Grant,","Thank you for registering for Italian Pasta and Baking Bread. We have received your payment of $190. Your first class is on Wednesday, 2 April. Please wear closed-toe shoes in the kitchen."]},
+  {kind:"E-mail",title:"",head:["To: Italian Pasta students","From: Marco Bellini, Instructor","Date: 30 March"],
+   paras:["Dear students,","Unfortunately, the kitchen will be closed for repairs on 2 April. Our first class will therefore take place on Thursday, 3 April, at the usual time. If you cannot attend, let me know and I will send you the recipes.","Marco"]}],
+ qs:[
+  f(T7.d,"What is included in the price of the classes?",["Ingredients","Aprons","A cookbook","Transportation"],"« All ingredients are included »."),
+  f(T7.x,"Why did Ms. Grant pay $190?",["She received a discount for taking two courses.","She paid a registration fee.","She chose the Thai Basics course.","She paid for only one course."],"120 $ + 90 $ = 210 $, moins 20 $ pour deux cours (publicité) = 190 $ (confirmation)."),
+  f(T7.x,"At what time will the first pasta class begin?",["6:30 P.M.","10:00 A.M.","8:30 P.M.","Noon"],"Le cours est déplacé au jeudi « at the usual time » (e-mail du professeur), soit 18 h 30 pour les cours en semaine (publicité)."),
+  f(T7.d,"Why has the first pasta class been moved?",["The kitchen needs repairs.","The instructor is away.","Too few students registered.","It is a public holiday."],"« The kitchen will be closed for repairs on 2 April »."),
+  f(T7.x,"On which day of the week will Ms. Grant attend her other course?",["Saturday","Wednesday","Thursday","Monday"],"Son deuxième cours est Baking Bread (confirmation), qui a lieu le samedi (publicité)."),
+ ]},
+{docs:[
+  {kind:"Catalogue",title:"Clearview Water Coolers",head:[],
+   paras:["Model A (bottled): $199\nModel B (connected to the water supply): $349, installation $60\nModel C (connected, with sparkling water): $499, installation $60","Monthly filter service for connected models: $15. Free delivery on orders over $1,000."]},
+  {kind:"E-mail",title:"",head:["To: Clearview Sales","From: Ben Ross, Office Manager, Halcyon Insurance"],
+   paras:["Hello,","We would like to order three Model B units for our offices on floors 2, 3 and 4, including installation. We do not want the filter service for now. We would prefer installation on a Friday afternoon, when the offices are quiet.","Ben Ross"]},
+  {kind:"Bon de livraison",title:"Clearview Delivery and Installation",head:["Customer: Ben Ross, Halcyon Insurance"],
+   paras:["Items: 3 x Model B\nInstallation: Friday, 16 May, 2:00 P.M.\nDelivery charge: $0","Technician's note: the unit on floor 4 could not be installed because the water connection was not ready. A second visit has been scheduled for 23 May."]}],
+ qs:[
+  f(T7.d,"What is indicated about Model A?",["It is the least expensive model.","It offers sparkling water.","It requires installation.","It includes a filter service."],"Le Model A coûte 199 $, le prix le plus bas du catalogue."),
+  f(T7.x,"Why was Halcyon Insurance not charged for delivery?",["The order cost more than $1,000.","It ordered three units.","It is a new customer.","The installation was delayed."],"3 x 349 $ + 3 x 60 $ = 1 227 $ (e-mail et catalogue), au-dessus du seuil de livraison gratuite de 1 000 $."),
+  f(T7.x,"What is Mr. Ross NOT paying for?",["A monthly filter service","Installation","Three water coolers","Connected units"],"Il refuse le service de filtre (e-mail), proposé à 15 $ par mois (catalogue)."),
+  f(T7.x,"What is indicated about the installation date?",["It matched the day Mr. Ross requested.","It was postponed for all floors.","It took place in the morning.","It was on a weekend."],"Il voulait un vendredi après-midi (e-mail) ; l'installation est prévue vendredi 16 mai à 14 h (bon de livraison)."),
+  f(T7.d,"Why will a technician return on 23 May?",["A connection was not ready on one floor.","A unit was damaged.","Mr. Ross changed the order.","A filter needs to be replaced."],"« The unit on floor 4 could not be installed because the water connection was not ready »."),
+ ]},
+{docs:[
+  {kind:"Itinéraire",title:"Flight Itinerary",head:["Passenger: Dr. Sofia Reyes"],
+   paras:["Outbound: Flight NA 412, Madrid to Toronto, Monday 9 June, departs 10:40, arrives 13:15 (local time)\nReturn: Flight NA 415, Toronto to Madrid, Friday 13 June, departs 19:30\nBaggage allowance: one checked bag (23 kg)"]},
+  {kind:"E-mail",title:"",head:["To: Dr. Sofia Reyes","From: North Atlantic Airways","Date: 2 June","Subject: Schedule change, flight NA 412"],
+   paras:["Due to a schedule change, flight NA 412 on 9 June will now depart at 14:10 and arrive at 16:45 local time. If this change does not suit you, you may switch to another flight free of charge or request a full refund."]},
+  {kind:"E-mail",title:"",head:["To: Harbourfront Hotel, Toronto","From: Dr. Sofia Reyes","Date: 3 June"],
+   paras:["Hello,","I have a reservation from 9 to 13 June. My flight has been rescheduled, so I will arrive at the hotel around 6:00 P.M. instead of 3:00 P.M. Please keep my room.","I will also be giving a presentation at the Toronto Medical Congress on the morning of 10 June. Could you book a taxi for me at 8:00 A.M. that day?","Sofia Reyes"]}],
+ qs:[
+  f(T7.d,"How many checked bags is Dr. Reyes allowed?",["One","Two","None","Three"],"« Baggage allowance: one checked bag »."),
+  f(T7.x,"At what time will Dr. Reyes's flight now arrive in Toronto?",["16:45","13:15","14:10","19:30"],"Le vol NA 412 (itinéraire) arrive désormais à 16 h 45 (e-mail de la compagnie)."),
+  f(T7.d,"What does the airline offer passengers affected by the change?",["A free change or a refund","A hotel voucher","A seat upgrade","An extra bag"],"« You may switch to another flight free of charge or request a full refund »."),
+  f(T7.x,"Why does Dr. Reyes write to the hotel?",["Her flight time has changed.","She wants to cancel her stay.","She wants a larger room.","Her congress has been moved."],"Son vol a été décalé (e-mail de la compagnie), elle prévient donc l'hôtel qu'elle arrivera plus tard."),
+  f(T7.i,"What will Dr. Reyes most likely do on 10 June?",["Give a presentation","Fly back to Madrid","Check out of the hotel","Visit the airline's office"],"Elle intervient au congrès médical le matin du 10 juin."),
+ ]}
+];
+
+/* ===== Partie VII, livre 4 (plus difficile) ===== */
+var P7d=[
+{docs:[{kind:"Conversation par messages",title:"",head:[],
+ paras:["Ines Moreau (8:47 A.M.)\nThe 9:00 train to Bristol has been cancelled because of signal problems.","Callum Price (8:49 A.M.)\nThe client meeting is at 11. Is there another train?","Ines Moreau (8:50 A.M.)\nThere's one at 9:40, arriving at 10:55.","Callum Price (8:51 A.M.)\nThat's too tight. Let's hold the meeting by video and visit them next week.","Ines Moreau (8:52 A.M.)\nI'll let them know."]}],
+ qs:[
+  f(T7.i,"At 8:51 A.M., what does Mr. Price mean when he writes, \"That's too tight\"?",["There would not be enough time before the meeting.","The train will be crowded.","The budget is limited.","The schedule is confusing."],"Le train arrive à 10 h 55 pour une réunion à 11 h : la marge est trop faible."),
+  f(T7.i,"What will Ms. Moreau most likely do next?",["Contact the client","Book a hotel","Take the 9:40 train","Cancel the visit permanently"],"« I'll let them know » : elle va prévenir le client du passage en visioconférence."),
+ ]},
+{docs:[{kind:"Avis",title:"Notice of Annual Shareholders' Meeting",head:["Brennock Holdings"],
+ paras:["The annual meeting of Brennock Holdings will be held on 14 May at 10:00 A.M. at the Ardmore Conference Centre. Shareholders who are unable to attend in person may vote online until 11:59 P.M. on 12 May. Proxy forms received after this date will not be counted."]}],
+ qs:[
+  f(T7.d,"How can shareholders vote without attending the meeting?",["Online","By telephone","By sending a representative on the day","By e-mailing the board"],"« May vote online until 11:59 P.M. on 12 May »."),
+  f(T7.i,"What is suggested about proxy forms?",["They must be received by 12 May.","They can be submitted at the meeting.","They are no longer accepted.","They must be sent by e-mail."],"Les formulaires reçus après la date du 12 mai ne seront pas pris en compte."),
+ ]},
+{docs:[{kind:"Garantie",title:"Thermatek Kettle: Limited Warranty",head:[],
+ paras:["This product is guaranteed against manufacturing defects for 24 months from the date of purchase. The warranty does not cover damage caused by limescale buildup, by dropping the kettle, or by use with a voltage other than 230 V. To make a claim, contact the retailer with proof of purchase."]}],
+ qs:[
+  f(T7.d,"How long does the warranty last?",["Two years","One year","Six months","Three years"],"24 mois = deux ans."),
+  f(T7.i,"Which problem would most likely be covered by the warranty?",["A switch that was faulty from the factory","Damage caused by a fall","Damage caused by limescale","Damage caused by the wrong voltage"],"Seuls les défauts de fabrication sont couverts ; les trois autres cas sont explicitement exclus."),
+ ]},
+{docs:[{kind:"E-mail",title:"",head:["To: Subscriber","From: Market Insight Weekly","Subject: Your subscription"],
+ paras:["Your annual subscription to Market Insight Weekly will renew automatically on 1 October at the current rate of $240. As a loyal subscriber, you may instead switch to our digital-only edition for $150 per year. To make this change, please update your preferences online before 25 September."]}],
+ qs:[
+  f(T7.m,"What is the main purpose of the e-mail?",["To announce a renewal and offer an alternative","To cancel a subscription","To confirm a payment","To advertise a new magazine"],"L'e-mail annonce le renouvellement automatique et propose une formule numérique moins chère."),
+  f(T7.d,"What must a subscriber do to switch to the digital edition?",["Update preferences online before 25 September","Pay $240 by 1 October","Call customer service","Wait until the renewal date"],"« Update your preferences online before 25 September »."),
+ ]},
+{docs:[{kind:"Article de presse",title:"Ferrovia Orders 30 New Electric Trains",head:[],
+ paras:["Regional rail operator Ferrovia has signed a €450 million contract with Aldermann Industries for 30 electric trains, with the first deliveries expected in 2028. The new trains will carry 20 percent more passengers than the diesel trains they replace on the northern lines and will use about a third less energy.","However, some union representatives have expressed concern because Aldermann, rather than Ferrovia's own workshops, will maintain the new trains."]}],
+ qs:[
+  f(T7.m,"What is the article mainly about?",["A transport company's large purchase","The closure of the northern lines","A strike by rail workers","A rise in train fares"],"Ferrovia commande 30 trains électriques pour 450 millions d'euros."),
+  f(T7.d,"What advantage of the new trains is mentioned?",["They will carry more passengers.","They will be cheaper to buy.","They will run on diesel.","They will be built by Ferrovia."],"« The new trains will carry 20 percent more passengers »."),
+  f(T7.i,"Why are some workers concerned?",["Maintenance work may move to another company.","The trains will be delivered late.","Their salaries will be reduced.","The diesel trains will be sold abroad."],"L'entretien sera assuré par Aldermann et non par les ateliers de Ferrovia : des emplois peuvent être menacés."),
+ ]},
+{docs:[{kind:"Mémo",title:"",head:["To: Research staff","From: Laboratory Management","Re: Access to Lab 3"],
+ paras:["Following last month's equipment inventory, access to Lab 3 will be restricted from 1 April. [1] Only staff who have completed the updated safety training will be able to open the door with their badge. [2] The training is available online and takes about 90 minutes. [3] Staff who have not completed it by 31 March should book time in Lab 3 through their team leader. [4]"]}],
+ qs:[
+  f(T7.m,"What is the memo mainly about?",["A change in access rules","The opening of a new laboratory","An inventory schedule","The hiring of team leaders"],"Le mémo annonce la restriction d'accès au Lab 3."),
+  f(T7.d,"How long does the safety training take?",["About an hour and a half","About 90 days","A full day","About 30 minutes"],"« Takes about 90 minutes »."),
+  f(T7.p,INS+"\"The inventory showed that several expensive instruments had been used without being properly recorded.\"",posFirst(1),"La phrase explique la cause de la restriction annoncée après l'inventaire : elle se place juste après la première phrase, en [1]."),
+ ]},
+{docs:[{kind:"Formulaire",title:"Travel Expense Claim",head:["Employee: Yusuf Demir · Department: Sales","Trip: Lisbon, 3 to 5 March"],
+ paras:["Airfare: $410\nHotel (2 nights): $260\nMeals: $95\nTaxi: $48\nTotal: $813","Note: no receipt for the taxi; the driver did not provide one.\nApproved by: (pending)"]}],
+ qs:[
+  f(T7.d,"How many nights did Mr. Demir stay at the hotel?",["Two","Three","One","Five"],"« Hotel (2 nights) »."),
+  f(T7.d,"Which expense is not supported by a receipt?",["The taxi","The airfare","The hotel","The meals"],"« No receipt for the taxi »."),
+  f(T7.i,"What is suggested about the claim?",["It has not been approved yet.","It was rejected.","It was paid in Lisbon.","It was submitted by a manager."],"« Approved by: (pending) » : l'approbation est en attente."),
+ ]},
+{docs:[{kind:"Lettre",title:"",head:["Westbury Town Council","22 September"],
+ paras:["Dear Resident,","Work to replace the water pipes beneath Hale Street will begin on 6 October and is expected to last six weeks. During this time, the street will be closed to through traffic between 7:00 A.M. and 6:00 P.M. on weekdays, although residents will still be able to reach their driveways.","Bus route 14 will be diverted along Park Road, and waste collection will move from Monday to Saturday for the duration of the work. We apologize for any inconvenience.","Westbury Town Council, Public Works"]}],
+ qs:[
+  f(T7.m,"Why was the letter sent?",["To inform residents of upcoming roadwork","To announce a new bus route","To request a payment","To invite residents to a meeting"],"La mairie annonce des travaux de remplacement des canalisations."),
+  f(T7.d,"What will happen to bus route 14?",["It will use a different road.","It will be cancelled.","It will run only on weekends.","It will stop at Hale Street."],"« Bus route 14 will be diverted along Park Road »."),
+  f(T7.i,"When will Hale Street most likely be open to all traffic?",["On weekends","Every morning before 9:00 A.M.","Only on Mondays","Never during the six weeks"],"La fermeture ne concerne que les jours de semaine, de 7 h à 18 h."),
+  f(T7.d,"What change is mentioned about waste collection?",["It will take place on a different day.","It will stop for six weeks.","It will be handled by residents.","It will take place twice a week."],"La collecte passe du lundi au samedi."),
+ ]},
+{docs:[{kind:"Article de presse",title:"Small Publisher Finds Success with Audiobooks",head:[],
+ paras:["Inkwell Press, founded in Edinburgh in 2012 by Margaret Osei, began producing audiobooks in 2021 after several of its authors asked for them. Audiobooks now account for 40 percent of the company's revenue, while print sales have remained stable.","The company records in its own studio and hires local actors as narrators. Next year, it plans to launch a podcast about writing and publishing."]}],
+ qs:[
+  f(T7.m,"What is the article mainly about?",["A publisher's growth in a new product area","The opening of a recording studio","A decline in print sales","A writing competition"],"L'article décrit le succès des livres audio pour Inkwell Press."),
+  f(T7.d,"Why did Inkwell Press start producing audiobooks?",["Its authors requested them.","Print sales were falling.","A competitor closed.","Local actors suggested it."],"« After several of its authors asked for them »."),
+  f(T7.d,"What share of revenue comes from audiobooks?",["40 percent","20 percent","12 percent","60 percent"],"« Audiobooks now account for 40 percent of the company's revenue »."),
+  f(T7.n,"What is NOT mentioned about Inkwell Press?",["It has opened a bookstore.","It records in its own studio.","It hires local actors.","It plans to launch a podcast."],"Aucune librairie n'est mentionnée ; les trois autres faits le sont."),
+ ]},
+{docs:[{kind:"Discussion en ligne",title:"",head:[],
+ paras:["Leah Turner (4:02 P.M.)\nThe printer quoted $3,200 for 500 copies of the annual report.","Omar Haddad (4:04 P.M.)\nLast year it was $2,600. I guess paper costs went up.","Leah Turner (4:05 P.M.)\nPartly. They also charge more for the glossy cover.","Jun Park (4:07 P.M.)\nDo we really need 500? Most shareholders read it online now.","Omar Haddad (4:08 P.M.)\nGood point. Three hundred would probably be enough.","Leah Turner (4:10 P.M.)\nI'll ask for a new quote for 300 copies with a matte cover."]}],
+ qs:[
+  f(T7.d,"How much did printing the report cost last year?",["$2,600","$3,200","$300","$500"],"« Last year it was $2,600 »."),
+  f(T7.i,"At 4:05 P.M., what does Ms. Turner mean when she writes, \"Partly\"?",["Paper costs explain only some of the increase.","Only part of the order is ready.","She agrees with Mr. Park.","The printer is partly closed."],"Elle ajoute que la couverture brillante coûte aussi plus cher : le papier n'explique qu'une partie de la hausse."),
+  f(T7.d,"Why does Mr. Park question the number of copies?",["Many shareholders read the report online.","The printer has run out of paper.","The report is too long.","The budget has been cut."],"« Most shareholders read it online now »."),
+  f(T7.d,"What will Ms. Turner do next?",["Request another quote","Accept the current quote","Find a new printer","Cancel the report"],"« I'll ask for a new quote for 300 copies with a matte cover »."),
+ ]},
+{docs:[
+  {kind:"Tarifs",title:"Hubspace Coworking: Membership Plans",head:[],
+   paras:["Flex, $150 per month: shared desks, Monday to Friday, 8:00 A.M. to 6:00 P.M.\nResident, $320 per month: a dedicated desk, 24-hour access, 5 hours of meeting-room use per month\nStudio, $750 per month: a private office for up to 4 people, unlimited meeting-room use","All plans include high-speed internet and coffee. Sign up for 12 months and get one month free."]},
+  {kind:"E-mail",title:"",head:["To: Hubspace Coworking","From: Nadia Haddad"],
+   paras:["Hello,","I am a freelance graphic designer and work on my own. I often need to finish projects late at night, after 10:00 P.M., and I meet clients about twice a month, for an hour each time. I would like to sign a 12-month contract. Could you confirm which plan suits me and the total cost for the year?","Nadia Haddad"]}],
+ qs:[
+  f(T7.d,"What is included in every plan?",["Internet access and coffee","A private office","24-hour access","Unlimited meeting-room use"],"« All plans include high-speed internet and coffee »."),
+  f(T7.x,"Which plan best suits Ms. Haddad's needs?",["Resident","Flex","Studio","None of the plans"],"Elle travaille après 22 h (accès 24 h/24) et a besoin d'environ 2 heures de réunion par mois : le forfait Resident (5 heures incluses) suffit."),
+  f(T7.x,"Why would the Flex plan not be suitable for Ms. Haddad?",["It does not allow access late at night.","It does not include internet.","It is for groups only.","It requires a 12-month contract."],"Le forfait Flex ferme à 18 h (tarifs), or elle travaille après 22 h (e-mail)."),
+  f(T7.x,"How much will Ms. Haddad most likely pay for one year?",["$3,520","$3,840","$1,650","$8,250"],"Forfait Resident à 320 $ par mois, avec un mois offert pour 12 mois : 11 x 320 $ = 3 520 $."),
+  f(T7.d,"What does Ms. Haddad say about her work?",["She works alone.","She manages a team.","She works only in the morning.","She meets clients every day."],"« I am a freelance graphic designer and work on my own »."),
+ ]},
+{docs:[
+  {kind:"Article de presse",title:"Westbury Approves New Cycle Lanes",head:["12 May"],
+   paras:["The town council voted 7 to 2 on Tuesday to build 12 kilometers of protected cycle lanes along Mill Road and the High Street. The €3 million project will remove about 150 on-street parking spaces. Work is due to begin in September and to be completed by the following spring."]},
+  {kind:"Courrier des lecteurs",title:"",head:["19 May"],
+   paras:["As the owner of a bakery on the High Street, I support safer cycling. However, your article did not mention that the council has offered no replacement parking. Many of my customers are elderly and drive into town. I urge the council to open the unused lot behind the old cinema before work begins in the autumn.","Alan Briggs"]}],
+ qs:[
+  f(T7.m,"What is the article mainly about?",["A plan to build cycle lanes","The closure of the High Street","A new parking lot","The renovation of a cinema"],"Le conseil municipal approuve 12 km de pistes cyclables."),
+  f(T7.d,"How many council members voted against the project?",["Two","Seven","Nine","Twelve"],"Le vote est de 7 voix contre 2."),
+  f(T7.x,"Why is Mr. Briggs concerned about the project?",["Parking spaces near his business will be removed.","Cycling will become more dangerous.","The project will cost too much.","His bakery will have to move."],"Le projet supprime 150 places de stationnement (article), et sa boulangerie se trouve sur la High Street concernée (lettre)."),
+  f(T7.x,"By when does Mr. Briggs want the unused lot opened?",["Before September","Before 12 May","By the following spring","By the end of the year"],"Il veut l'ouverture « before work begins », et les travaux commencent en septembre (article)."),
+  f(T7.i,"What is suggested about Mr. Briggs's customers?",["Many of them depend on their cars.","Most of them cycle to the bakery.","They live near the cinema.","They support the council."],"« Many of my customers are elderly and drive into town »."),
+ ]},
+{docs:[
+  {kind:"E-mail",title:"",head:["To: Sparkle Pro; BrightClean; GreenSweep","From: Gita Shah, Office Manager, Norland Consulting","Date: 3 February","Subject: Request for quotes"],
+   paras:["Hello,","We are looking for a cleaning service for our 600 m² office, five evenings a week, starting on 1 March. The contract will last one year. Please send your quote by 14 February and indicate whether you use eco-friendly products, which is important to us.","Gita Shah"]},
+  {kind:"Tableau comparatif",title:"Cleaning quotes received",head:[],
+   paras:["Sparkle Pro: $2,100 per month · eco-friendly products: yes · available from 1 March\nBrightClean: $1,850 per month · eco-friendly products: no · available from 1 March\nGreenSweep: $1,950 per month · eco-friendly products: yes · available from 15 March"]},
+  {kind:"E-mail",title:"",head:["To: Sparkle Pro","From: Gita Shah","Date: 18 February"],
+   paras:["Hello,","I am pleased to inform you that we have chosen your company. Although your price was the highest, you were the only provider that met all of our requirements. Could you send us the contract by 25 February?","Gita Shah"]}],
+ qs:[
+  f(T7.m,"What is the purpose of the first e-mail?",["To request price quotes for a service","To cancel a cleaning contract","To complain about a cleaning company","To advertise office space"],"Mme Shah demande des devis à trois entreprises de nettoyage."),
+  f(T7.x,"Why was BrightClean not selected?",["It does not use eco-friendly products.","It was the most expensive.","It could not start on 1 March.","It sent its quote late."],"Les produits écologiques sont exigés (premier e-mail), et BrightClean n'en utilise pas (tableau)."),
+  f(T7.x,"Why was GreenSweep not selected?",["It could not start on the required date.","It does not use eco-friendly products.","It was the most expensive.","It cleans only on weekends."],"Le service doit commencer le 1er mars (premier e-mail), GreenSweep n'est disponible que le 15 mars (tableau)."),
+  f(T7.x,"How much will Norland Consulting pay per month for cleaning?",["$2,100","$1,850","$1,950","$600"],"Sparkle Pro est retenue (dernier e-mail) à 2 100 $ par mois (tableau)."),
+  f(T7.d,"What does Ms. Shah ask Sparkle Pro to do?",["Send a contract","Lower its price","Start on 15 March","Provide references"],"« Could you send us the contract by 25 February? »."),
+ ]},
+{docs:[
+  {kind:"Brochure",title:"Halden Art Museum Membership",head:[],
+   paras:["Individual, $60 per year: free admission, 10 percent shop discount\nFamily, $110 per year: free admission for two adults and up to three children, 10 percent shop discount, invitations to exhibition previews\nPatron, $250 per year: all Family benefits, plus a 20 percent shop discount and free parking","Members who join before 30 April receive a free museum tote bag."]},
+  {kind:"E-mail",title:"",head:["To: Membership Office, Halden Art Museum","From: Rafael Costa","Date: 25 April"],
+   paras:["Hello,","My wife and I visit the museum often with our two children. We would like a membership that includes invitations to exhibition previews, but we do not drive to the museum, so we do not need parking. Which option would you recommend?","Rafael Costa"]},
+  {kind:"Reçu",title:"Halden Art Museum",head:["Date: 27 April"],
+   paras:["Member: Rafael Costa\nMembership: Family\nAmount paid: $110\nGift: museum tote bag\nValid until: 26 April of next year"]}],
+ qs:[
+  f(T7.d,"What benefit do all members receive?",["Free admission","Free parking","Exhibition preview invitations","A 20 percent shop discount"],"L'entrée gratuite figure dans les trois formules."),
+  f(T7.x,"Why did Mr. Costa most likely choose the Family membership rather than the Patron membership?",["He does not need parking.","He has more than three children.","He wanted a lower shop discount.","The Patron option was full."],"Le forfait Patron ajoute surtout le parking (brochure), dont il n'a pas besoin (e-mail)."),
+  f(T7.x,"Why did Mr. Costa receive a tote bag?",["He joined before 30 April.","He chose the Patron membership.","He visits the museum often.","He bought something in the shop."],"Il a adhéré le 27 avril (reçu), avant la date limite du 30 avril (brochure)."),
+  f(T7.i,"How many people in the Costa family can use the membership?",["Four","Two","Three","Five"],"Deux adultes et deux enfants (e-mail), ce que couvre la formule Family."),
+  f(T7.d,"How long is the membership valid?",["One year","Six months","Two years","Until the end of April"],"Valable du 27 avril jusqu'au 26 avril de l'année suivante : un an."),
+ ]},
+{docs:[
+  {kind:"Avis de rappel",title:"Product Recall: Voltaro Model P20 Portable Heater",head:["5 March"],
+   paras:["Voltaro is recalling Model P20 portable heaters sold between 1 October and 31 January because a faulty switch may cause overheating. Customers should stop using the heater immediately and either return it to any retailer for a full refund or contact Voltaro for a free replacement, the Model P25. Heaters sold before 1 October are not affected."]},
+  {kind:"E-mail",title:"",head:["To: Voltaro Customer Service","From: Kate Morrow","Date: 7 March"],
+   paras:["Hello,","I bought a P20 heater at Homeline on 15 December. I no longer have the receipt, but the serial number is VT-20-88412. I would prefer a replacement rather than a refund, since it is still cold here. How long would delivery take?","Kate Morrow"]},
+  {kind:"E-mail",title:"",head:["To: Kate Morrow","From: Voltaro Customer Service","Date: 8 March"],
+   paras:["Dear Ms. Morrow,","We have confirmed from the serial number that your heater is affected by the recall, so no receipt is needed. A new heater will be delivered within five working days. Please keep your P20 unplugged; a courier will collect it when the new heater is delivered.","Voltaro Customer Service"]}],
+ qs:[
+  f(T7.d,"Why are the heaters being recalled?",["A part may cause them to overheat.","They use too much electricity.","They were sold at the wrong price.","Their instructions contain errors."],"« A faulty switch may cause overheating »."),
+  f(T7.x,"Why is Ms. Morrow's heater affected by the recall?",["It was bought during the recall period.","It was bought at Homeline.","It has no receipt.","It is a Model P25."],"Achat le 15 décembre (e-mail), entre le 1er octobre et le 31 janvier (avis de rappel)."),
+  f(T7.x,"What will Ms. Morrow receive?",["A Model P25 heater","A full refund","A new switch","A store voucher"],"Elle préfère un remplacement (son e-mail), et le modèle de remplacement est le P25 (avis de rappel)."),
+  f(T7.d,"How was Ms. Morrow's heater identified without a receipt?",["By its serial number","By a store record","By a photo","By its delivery date"],"« We have confirmed from the serial number that your heater is affected »."),
+  f(T7.d,"What will happen to Ms. Morrow's P20 heater?",["A courier will collect it.","She will return it to the store.","She can keep using it.","It will be repaired at her home."],"« A courier will collect it when the new heater is delivered »."),
+ ]}
+];
+
+var BOOKS={"1":{p5:P5,p6:P6,p7:P7},"2":{p5:P5b,p6:P6b,p7:P7b},"3":{p5:P5c,p6:P6c,p7:P7c},"4":{p5:P5d,p6:P6d,p7:P7d}};
 function pool(book,k){
+  if(k==="p7")return BOOKS[book==="mix"?String(1+Math.floor(Math.random()*4)):book].p7;
   if(book==="mix")return [].concat(BOOKS["1"][k],BOOKS["2"][k],BOOKS["3"][k],BOOKS["4"][k]);
   return BOOKS[book][k];
 }
@@ -695,7 +1116,7 @@ function build(part,book){
   if(partsOf(part).indexOf(7)>-1){
     n=147;
     var g7={type:7,passages:[]};
-    shuffle(P7).sort(function(a,b){return a.docs.length-b.docs.length;}).forEach(function(p){
+    shuffle(pool(book,"p7")).sort(function(a,b){return a.docs.length-b.docs.length;}).forEach(function(p){
       var pp={docs:p.docs,qs:[]};
       p.qs.forEach(function(it){
         var q={i:qs.length,n:n++,part:7,tag:it.tag,text:it.q,opts:mkOpts(it.o),e:it.e,ans:null};
@@ -719,10 +1140,10 @@ function renderStart(){
   var h='<div class="start"><p class="kick">TOEIC · Reading</p><h1>Parties V, VI et VII</h1>'+
   '<p class="lead">Le format de l’épreuve réelle : 100 questions en 75 minutes. Phrases à compléter (30), textes à trous (16), puis compréhension de documents simples, doubles et triples (54). Tu coches une réponse par question, le chrono tourne, la correction détaillée s’affiche à la fin. Les lettres des choix sont mélangées à chaque essai.</p>'+
   '<fieldset><legend>Livre</legend><div class="tiles">'+
-   tile("book","1","Livre 1","30 phrases · 4 textes",setup.book==="1",false)+
-   tile("book","2","Livre 2","30 phrases · 4 textes",setup.book==="2",false)+
-   tile("book","3","Livre 3","30 phrases · 4 textes",setup.book==="3",false)+
-   tile("book","4","Livre 4","30 phrases · 4 textes · niveau difficile",setup.book==="4",false)+
+   tile("book","1","Livre 1","100 questions · Parties V, VI et VII",setup.book==="1",false)+
+   tile("book","2","Livre 2","100 questions · Parties V, VI et VII",setup.book==="2",false)+
+   tile("book","3","Livre 3","100 questions · Parties V, VI et VII",setup.book==="3",false)+
+   tile("book","4","Livre 4","100 questions · niveau difficile",setup.book==="4",false)+
    tile("book","mix","Mélange","Tirage au hasard dans les 4 livres",setup.book==="mix",false)+
   '</div></fieldset>'+
   '<fieldset><legend>Épreuve</legend><div class="tiles">'+
@@ -738,7 +1159,7 @@ function renderStart(){
    tile("pace","free","Sans limite","Le chrono compte le temps passé",setup.pace==="free")+
   '</div></fieldset>'+
   '<div class="go"><button type="button" class="btn big" data-act="start">Commencer</button><p class="tl" id="tl"></p></div>'+
-  '<p class="note">Les questions sont originales, écrites dans l’esprit du TOEIC (grammaire, formes de mots, vocabulaire, connecteurs, insertion de phrase). Elles ne reprennent aucun sujet officiel. La Partie VII est commune aux 4 livres (10 textes simples, 2 doubles, 3 triples), avec l’ordre et les lettres mélangés.</p>';
+  '<p class="note">Les questions sont originales, écrites dans l’esprit du TOEIC (grammaire, formes de mots, vocabulaire, connecteurs, insertion de phrase). Elles ne reprennent aucun sujet officiel. Chaque livre a sa propre Partie VII : 54 questions sur des textes simples, doubles et triples. L’ordre des documents et les lettres des choix sont mélangés.</p>';
   if(hist.length){
     h+='<p class="hs">Derniers essais</p><ul class="hist">'+hist.map(function(x){
       var d=new Date(x.d).toLocaleDateString("fr-FR",{day:"numeric",month:"short"});
